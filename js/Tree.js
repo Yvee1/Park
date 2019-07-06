@@ -1,5 +1,9 @@
 class Tree {
   constructor(amount){
+    // Tree geometry
+    this.geom = new THREE.Geometry();
+    this.outline_geom = new THREE.Geometry();
+
     // Amount of leaves
     this.amount = amount;
     
@@ -19,7 +23,7 @@ class Tree {
     this.branches = []
     this.branches.push(this.root);
 
-    // Grow the root of the tree until leaves are in range (of max_dist)
+    // Grow the root of the tree until leaves are in range (of maxDist)
     let current = this.root;
     let found = false;
 
@@ -28,8 +32,8 @@ class Tree {
       // Go through leaves and check if one is in range
       for (let i = 0; i < this.leaves.length; i++){
         let d = current.pos.distanceToSquared(this.leaves[i].pos)
-        // console.log(d, max_dist);
-        if (d < max_dist) {
+        // console.log(d, maxDist);
+        if (d < maxDist) {
           found = true;
         }
       }
@@ -60,10 +64,10 @@ class Tree {
       // Bottom branches are thicker
       let b = this.branches[i];
       if (i < 50){
-        let width = map_range(i, 0, 50, 1, 0.5);
+        let width = mapRange(i, 0, 50, 1, 0.5);
       }
       else{
-        let width = map_range(i, 0, this.branches.length, 0.5, 0.1);
+        let width = mapRange(i, 0, this.branches.length, 0.5, 0.1);
       }
 
       b.show(width)
@@ -85,14 +89,14 @@ class Tree {
           let d = leaf.pos.distanceToSquared(branch.pos);
           
           // If this branch is too close to a leaf, mark it to be removed
-          if (d < min_dist) {
+          if (d < minDist) {
             //console.log("REACHED LEAF")
             leaf.reached = true;
             //leaf.makeRed();
             closestBranch = null;
             break;
           } 
-          else if (d > max_dist){
+          else if (d > maxDist){
             continue;
           } else if (closestBranch == null || d < record) {
             // Set the closest branch of this leaf.
@@ -155,33 +159,40 @@ class Tree {
     }
   }
 
-  // Step by step execution such that growing can be animated
-  nextFrame(){
+  // Merge meshes into one for better performance
+  nextMerge(){
     if (this.finished){
       if(!this.complete){
-      for (let j = 0; j < Math.min(((this.last_drawn + 1)/30)+1, 20); j++){
         if (this.last_drawn < this.branches.length-1){
           let i = this.last_drawn + 1;
           // Bottom branches are thicker
           let b = this.branches[i];
           let width;
           if (i < 80){
-            width = map_range(i, 0, 80, 0.8, 0.25);
+            width = mapRange(i, 0, 80, 0.8, 0.25);
           }
           else{
-            width = map_range(i, 0, this.branches.length, 0.5, 0)**2+0.01;
+            width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.01;
           }
           
 
-          b.show(width)
+          let meshes = b.show(width)
+          if (meshes){
+            for (let mesh of meshes[0]){
+              this.geom.mergeMesh(mesh);
+            }
+            for (let outline_mesh of meshes[1]){
+              this.outline_geom.mergeMesh(outline_mesh);
+            }
+          }
           this.last_drawn++;
         }
         else{
+          scene.add(treeMesh);
+          scene.add(treeOutlineMesh);
           this.complete = true;
-          break;
         }
       }
     }
-  }
   }
 }

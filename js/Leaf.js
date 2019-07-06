@@ -5,12 +5,11 @@ class Leaf {
         this.pos.y += 10;
     }
 
-    // Add this leaf to the scene (should probably return the sphere instead..)
+    // Add this leaf to the scene
     show(){
         var geometry = new THREE.SphereGeometry( 0.1, 6, 6 );
         geometry.translate(this.pos.x, this.pos.y, this.pos.z);
-        //console.log("Leaf drawn at");
-        //console.log(this.pos)
+
         var material = new THREE.MeshStandardMaterial( {color: 0x00ff00} );
         var sphere = new THREE.Mesh( geometry, material );
         this.sphere = sphere;
