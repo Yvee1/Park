@@ -78,7 +78,7 @@ function update() {
 
   // Camera rotation in circle
   camera.position.set(30*Math.sin(t), cameraY, 30*Math.cos(t));
-  camera.lookAt(0, cameraY, 0);
+  camera.lookAt(0, (7+2*cameraY)/3, 0);
   t += 0.002;
 }
 
@@ -99,7 +99,7 @@ function createCamera(){
   const fov = 35;
   const aspect = container.clientWidth / container.clientHeight;
 
-  const near = 0.001;
+  const near = 0.1;
   const far = 100;
 
   camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
@@ -107,7 +107,7 @@ function createCamera(){
 }
 
 function createPlane(){
-  const geometry = new THREE.PlaneBufferGeometry( 200, 200, 50, 50);
+  const geometry = new THREE.PlaneBufferGeometry( 200, 200, 70, 70);
   geometry.rotateX(-PI/2);
 
   const material = new THREE.MeshBasicMaterial( { color: "white", wireframe: true } );
@@ -128,13 +128,10 @@ function createLights(){
 
 function createRenderer(){
   // create a WebGLRenderer and set its width and height
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer = new THREE.WebGLRenderer( { antialias: true, canvas: document.getElementById("viewport") } );
   renderer.setSize( container.clientWidth, container.clientHeight );
 
   renderer.setPixelRatio( window.devicePixelRatio );
-
-  // add the automatically created <canvas> element to the page
-  container.appendChild( renderer.domElement );
 }
 
 // a function that will be called every time the window gets resized.
@@ -206,6 +203,6 @@ function createTree() {
 }
 
 function updateCamera(ev) {
-  cameraY = 7 -window.scrollY / 20.0;
+  cameraY = 7 - window.scrollY / 20.0;
   //console.log(cameraY)
 }

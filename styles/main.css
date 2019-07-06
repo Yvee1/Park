@@ -15,9 +15,18 @@ h1 {
   font-size: 1.5rem;
 }
 
-
 #scene-container {
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+#viewport {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }

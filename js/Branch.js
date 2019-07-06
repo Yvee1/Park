@@ -81,7 +81,7 @@ class Branch {
                 circle.material.side = THREE.DoubleSide;
                 meshes.push(circle);
 
-                let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
+                let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
                 let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
                 outlineMesh2.scale.multiplyScalar(1.1);
                 outline_meshes.push(outlineMesh2);
