@@ -3,6 +3,7 @@ const PI = Math.PI
 // three.js globals
 let container;
 let camera;
+let cameraY = 7;
 let controls;
 let renderer;
 let scene;
@@ -44,6 +45,7 @@ function init() {
 
   // let canvas resize
   window.addEventListener( 'resize', onWindowResize );
+  window.addEventListener("scroll", updateCamera);
 
   // start the animation loop
   renderer.setAnimationLoop( () => {
@@ -75,8 +77,8 @@ function update() {
   }
 
   // Camera rotation in circle
-  camera.position.set(30*Math.sin(t), 7, 30*Math.cos(t));
-  camera.lookAt(0, 7, 0);
+  camera.position.set(30*Math.sin(t), cameraY, 30*Math.cos(t));
+  camera.lookAt(0, cameraY, 0);
   t += 0.002;
 }
 
@@ -97,7 +99,7 @@ function createCamera(){
   const fov = 35;
   const aspect = container.clientWidth / container.clientHeight;
 
-  const near = 0.1;
+  const near = 0.001;
   const far = 100;
 
   camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
@@ -201,4 +203,9 @@ function createTree() {
   tree = new Tree(amount);
   treeMesh = new THREE.Mesh(tree.geom, tMat);
   treeOutlineMesh = new THREE.Mesh(tree.outline_geom, outlineMat);
+}
+
+function updateCamera(ev) {
+  cameraY = 7 -window.scrollY / 20.0;
+  //console.log(cameraY)
 }
