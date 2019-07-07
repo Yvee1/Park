@@ -8,6 +8,9 @@ let controls;
 let renderer;
 let scene;
 let mesh;
+let sphere;
+let sphereY;
+let planted = false;
 
 // map interval to another interval linearly
 function mapRange(value, low1, high1, low2, high2) {
@@ -56,6 +59,28 @@ function init() {
   } );
 
   createTree();
+
+  const sphereGeom = new THREE.SphereBufferGeometry(0.5, 12, 12);
+  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color:"lightgreen"})
+  sphere = new THREE.Mesh( sphereGeom, sphereMat );
+  sphere.position.y = 20;
+  sphereParams = {y: 20, a: 0.1};
+  sphereTarget = {y: 0, a: 0.01};
+  scene.add(sphere);
+  const tweenPos = new TWEEN.Tween(sphereParams).to(sphereTarget, 5000)
+                .easing(TWEEN.Easing.Quadratic.Out)
+                .onUpdate(() => { 
+                                  sphere.position.y = sphereParams.y;
+                                  sphere.rotateY(sphereParams.a);
+                                })
+                .onComplete(() => planted = true)
+                .start();
+
+  // let rotAngle = {a: 0};
+  // const tweenRot = new TWEEN.Tween(rotAngle).to({a: 0.00000001*PI}, 5000)
+  //                  .easing(TWEEN.Easing.Quadratic.Out)
+  //                  .onUpdate(() => {sphere.rotateY(rotAngle); console.log(rotAngle);})
+  //                  .start();
 }
 
 let t = 0;
@@ -64,12 +89,14 @@ function update() {
   // Calculate the branches
   tree.grow();
 
+  TWEEN.update();
 
   if(tree){
     for (let i = 0; i < 10; i++){tree.nextMerge()}
     
     // Grow animation
     if(tree.complete){
+        scene.remove(sphere)
         treeMesh.material.uniforms.delta.value = delta;
         treeOutlineMesh.material.uniforms.delta.value = delta;
         delta += 0.08;
@@ -113,7 +140,9 @@ function createPlane(){
   const material = new THREE.MeshBasicMaterial( { color: "white", wireframe: true } );
 
   mesh = new THREE.Mesh( geometry, material );
+  //mesh.position.y += 0.01
   scene.add( mesh );
+  scene.add(new THREE.Mesh( new THREE.PlaneBufferGeometry( 200, 200, 1, 1).rotateX(-PI/2), new THREE.MeshBasicMaterial({color: "black", side:THREE.DoubleSide})))
 }
 
 function createLights(){

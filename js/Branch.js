@@ -78,11 +78,13 @@ class Branch {
                 let material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
                 geometry.rotateX(PI/2);
                 let circle = new THREE.Mesh( geometry, material );
+                circle.position.add(tree.pos);
                 circle.material.side = THREE.DoubleSide;
                 meshes.push(circle);
 
                 let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
                 let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
+                outlineMesh2.position.add(tree.pos);
                 outlineMesh2.scale.multiplyScalar(1.1);
                 outline_meshes.push(outlineMesh2);
             }

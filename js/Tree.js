@@ -8,7 +8,7 @@ class Tree {
     this.amount = amount;
     
     // Position of the root of the tree
-    this.pos = new THREE.Vector3(0, 0, 0);
+    this.pos = new THREE.Vector3(0, 0.01, 0);
 
     // The root, facing up the y-axis
     this.root = new Branch(null, this.pos, new THREE.Vector3(0, 1, 0));
@@ -188,9 +188,11 @@ class Tree {
           this.last_drawn++;
         }
         else{
-          scene.add(treeMesh);
-          scene.add(treeOutlineMesh);
-          this.complete = true;
+          if(planted){
+            scene.add(treeMesh);
+            scene.add(treeOutlineMesh);
+            this.complete = true;
+          }
         }
       }
     }
