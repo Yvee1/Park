@@ -1,11 +1,23 @@
+:root {
+  --gutter: 10px;
+  --noOfColumns: 4;
+
+  --ratioA: 1;
+  --ratioB: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: black;
   margin: 0;
   overflow-x: hidden;
   color: white;
-  text-align: center;
   overflow-y: scroll;
-  height: 1300px;
+
+  font-family: 'Roboto Mono', monospace;
 }
 
 h1 {
@@ -29,4 +41,45 @@ h1 {
   top: 0;
   right: 0;
   bottom: 0;
+}
+
+.splash-screen {
+  width: 100%;
+  height: 100vh;
+}
+
+.card-container {
+  max-width: 1366px;
+  margin: auto;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 1rem;
+  padding: 60px;
+}
+
+.card {
+  background-size: cover;
+  text-align: center;
+}
+
+div.stretchy-wrapper {
+  position: relative;
+
+  /* Aspect ratio 16:9 */
+  padding-bottom: 56.25%;
+}
+
+div.stretchy-wrapper > div {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+}
+
+.sketch-title {
+  text-align: left;
+  font-size: 1.3em;
+  font-weight: lighter;
 }

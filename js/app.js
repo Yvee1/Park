@@ -46,9 +46,12 @@ function init() {
   createRenderer();
   createPlane();
 
-  // let canvas resize
+  // Event listeners
   window.addEventListener( 'resize', onWindowResize );
   window.addEventListener("scroll", updateCamera);
+
+  // Start camera on correct location
+  updateCamera();
 
   // start the animation loop
   renderer.setAnimationLoop( () => {
