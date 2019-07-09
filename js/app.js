@@ -142,11 +142,6 @@ function update() {
   // camera.position.set(30*Math.sin(t), targetCameraY, 30*Math.cos(t));
 
   if (!scrolling){  
-    normalizedOrientation.set(
-      -((mousePosition.x / container.clientWidth) - 0.5) * cameraAmpl.x,
-      ((mousePosition.y / container.clientHeight) - 0.5) * cameraAmpl.y,
-      0.5,
-    );
     camera.position.x += (normalizedOrientation.x - camera.position.x) * cameraVelocity;
     camera.position.y += (normalizedOrientation.y - camera.position.y + targetCameraY) * cameraVelocity;
     currentCameraY = targetCameraY;
@@ -305,8 +300,15 @@ function updateCamera(event) {
 
 // adapted from https://github.com/Jeremboo/animated-mesh-lines/blob/master/app/decorators/HandleCameraOrbit.js
 function handleMouseMove(event) {
+  if(!scrolling){
     mousePosition.x = event.clientX || (event.touches && event.touches[0].clientX) || mousePosition.x;
     mousePosition.y = event.clientY || (event.touches && event.touches[0].clientY) || mousePosition.y;
+    normalizedOrientation.set(
+      -((mousePosition.x / container.clientWidth) - 0.5) * cameraAmpl.x,
+      ((mousePosition.y / container.clientHeight) - 0.5) * cameraAmpl.y,
+      0.5,
+    );
+  }
 }
 
 function handleOrientationMove(event) {
