@@ -7,6 +7,7 @@ class Branch {
         this.len = 0.1;
         this.count = 0;
         this.children = [];
+        this.height = 0;
     }
 
     // Calculate child branch
@@ -19,6 +20,7 @@ class Branch {
 
         let nextBranch = new Branch(this, nextPos, this.dir.clone());
         this.children.push(nextBranch);
+        nextBranch.height = this.height + 1;
         return nextBranch;
     }
 

@@ -28,7 +28,6 @@ class Tree {
     let found = false;
 
     while (!found) {
-
       // Go through leaves and check if one is in range
       for (let i = 0; i < this.leaves.length; i++){
         let d = current.pos.distanceToSquared(this.leaves[i].pos)
@@ -90,7 +89,6 @@ class Tree {
           
           // If this branch is too close to a leaf, mark it to be removed
           if (d < minDist) {
-            //console.log("REACHED LEAF")
             leaf.reached = true;
             //leaf.makeRed();
             closestBranch = null;
@@ -202,16 +200,19 @@ class Tree {
     let t1 = performance.now();
     let geoms = []
     let outline_geoms = []
+
+    let maxHeight = 0;
+    for (let b of this.branches){
+      if (b.height > maxHeight){
+        maxHeight = b.height;
+      }
+    }
+
     for (let i = 0; i < this.branches.length; i++){
       let b = this.branches[i];
       let width;
 
-      if (i < 80){
-        width = mapRange(i, 0, 80, 0.8, 0.25);
-      }
-      else{
-        width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.03;
-      }
+      width = mapRange(b.height, 0, maxHeight, 0.8, 0)**2.5 + 0.03
 
       let geometries = b.show(width)
 

@@ -25,7 +25,7 @@ const minDist = 0.1;
 let treeMesh;
 let treeOutlineMesh
 
-let amount = 150
+let amount = 500
 let tree;
 
 let mousePosition;
@@ -86,6 +86,7 @@ function init() {
   } );
 
   tree = new Tree(amount);
+  //tree.showLeaves();
 
   const sphereGeom = new THREE.SphereBufferGeometry(0.5, 12, 12);
   const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color:"lightgreen"})
@@ -284,6 +285,7 @@ function createTree() {
   });
 
   treeMesh = new THREE.Mesh(tree.geom, tMat);
+  //treeMesh = new THREE.Mesh(tree.geom, new THREE.MeshStandardMaterial({color: "saddlebrown"}));
   treeOutlineMesh = new THREE.Mesh(tree.outline_geom, outlineMat);
   scene.add(treeMesh);
   scene.add(treeOutlineMesh);
