@@ -199,6 +199,7 @@ class Tree {
   }
 
   merge(){
+    let t1 = performance.now();
     let geoms = []
     let outline_geoms = []
     for (let i = 0; i < this.branches.length; i++){
@@ -209,7 +210,7 @@ class Tree {
         width = mapRange(i, 0, 80, 0.8, 0.25);
       }
       else{
-        width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.01;
+        width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.03;
       }
 
       let geometries = b.show(width)
@@ -223,9 +224,12 @@ class Tree {
         }
       }
     }
-    console.log(outline_geoms)
+
+    
     this.geom = THREE.BufferGeometryUtils.mergeBufferGeometries(geoms, false);
+    
     this.outline_geom = THREE.BufferGeometryUtils.mergeBufferGeometries(outline_geoms, false);
+    console.log(performance.now()-t1)
     this.complete = true;
   }
 }

@@ -42,22 +42,18 @@ class Branch {
 
             // Another cylinder that's a bit bigger for an outline effect            
             let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
-            let outlineMesh1 = new THREE.Mesh( geometry, outlineMaterial );
+            let outlineMesh1 = new THREE.Mesh( geometry.clone(), outlineMaterial );
             outlineMesh1.position.copy(cylinder.position.clone());
             outlineMesh1.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
             outlineMesh1.scale.multiplyScalar(1.1);
 
-            // let meshes = [];
-            // let outline_meshes = [];
             let geoms = [];
             let outlineGeoms = [];
 
-            // outline_meshes.push(outlineMesh1);
             outlineMesh1.updateMatrix();
             outlineMesh1.geometry.applyMatrix(outlineMesh1.matrix);
             outlineGeoms.push(outlineMesh1.geometry);
 
-            // meshes.push(cylinder);
             cylinder.updateMatrix();
             cylinder.geometry.applyMatrix(cylinder.matrix);
             geoms.push(cylinder.geometry);
@@ -71,19 +67,16 @@ class Branch {
                 
                 circle.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
                 circle.position.copy(vector.clone().add(this.parent.pos).add(vector));
-                // meshes.push(circle);
+
+                let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
+                let outlineMesh2 = new THREE.Mesh( geometry.clone(), outlineMaterial );
+                outlineMesh2.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
+                outlineMesh2.position.copy(vector.clone().add(this.parent.pos).add(vector));
+                outlineMesh2.scale.multiplyScalar(1.1);
 
                 circle.updateMatrix();
                 circle.geometry.applyMatrix(circle.matrix);
                 geoms.push(circle.geometry);
-
-                let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
-                let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
-                outlineMesh2.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
-                outlineMesh2.position.copy(vector.clone().add(this.parent.pos).add(vector));
-                outlineMesh2.scale.multiplyScalar(1.1);
-                // outline_meshes.push(outlineMesh2);
-
                 outlineMesh2.updateMatrix();
                 outlineMesh2.geometry.applyMatrix(outlineMesh2.matrix)
                 outlineGeoms.push(outlineMesh2.geometry);
@@ -100,20 +93,7 @@ class Branch {
                 let outlineGeom = new THREE.BufferGeometry();
                 outlineGeom.copy(geometry);
                 outlineGeom.scale(1.1, 1.1, 1.1)
-                outlineGeoms.push(outlineGeom)
-
-                // let material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-                // let circle = new THREE.Mesh( geometry, material );
-                // circle.position.add(tree.pos);
-                // circle.material.side = THREE.DoubleSide;
-                // meshes.push(circle);
-
-                //let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
-                //let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
-                //outlineMesh2.position.add(tree.pos);
-                //outlineMesh2.scale.multiplyScalar(1.1);
-                //outline_meshes.push(outlineMesh2);
-                
+                outlineGeoms.push(outlineGeom)       
             }
 
             return [geoms, outlineGeoms]

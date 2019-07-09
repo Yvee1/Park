@@ -124,7 +124,7 @@ function update() {
   if(tree.finished){
     //for (let i = 0; i < 5; i++){tree.nextMerge()}
 
-    if (!tree.complete){
+    if (!tree.complete && planted){
       tree.merge();
       createTree();
     }
@@ -283,7 +283,6 @@ function createTree() {
     side: THREE.BackSide
   });
 
-  console.log(tree);
   treeMesh = new THREE.Mesh(tree.geom, tMat);
   treeOutlineMesh = new THREE.Mesh(tree.outline_geom, outlineMat);
   scene.add(treeMesh);

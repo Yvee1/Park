@@ -2,6 +2,8 @@ class Leaf {
     constructor(){
         this.pos = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5);
         this.pos.multiplyScalar(Math.random()*10);
+        //this.pos.x *= 3;
+        //this.pos.z *= 3;
         this.pos.y += 10;
     }
 
