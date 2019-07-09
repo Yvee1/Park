@@ -1,0 +1,25 @@
+{
+  "name": "park",
+  "version": "1.0.0",
+  "description": "A collection of trees.",
+  "main": "app.js",
+  "dependencies": {
+    "gulp-nunjucks": "^5.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yvee1/Park.git"
+  },
+  "author": "Steven van den Broek",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yvee1/Park/issues"
+  },
+  "homepage": "https://github.com/Yvee1/Park#readme"
+}
