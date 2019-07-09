@@ -1,8 +1,8 @@
 class Tree {
   constructor(amount){
     // Tree geometry
-    this.geom = new THREE.Geometry();
-    this.outline_geom = new THREE.Geometry();
+    this.geom = new THREE.BufferGeometry();
+    this.outline_geom = new THREE.BufferGeometry();
 
     // Amount of leaves
     this.amount = amount;
@@ -196,5 +196,36 @@ class Tree {
         }
       }
     }
+  }
+
+  merge(){
+    let geoms = []
+    let outline_geoms = []
+    for (let i = 0; i < this.branches.length; i++){
+      let b = this.branches[i];
+      let width;
+
+      if (i < 80){
+        width = mapRange(i, 0, 80, 0.8, 0.25);
+      }
+      else{
+        width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.01;
+      }
+
+      let geometries = b.show(width)
+
+      if (geometries){
+        for (let geom of geometries[0]){
+          geoms.push(geom);
+        }
+        for (let outline_geom of geometries[1]){
+          outline_geoms.push(outline_geom);
+        }
+      }
+    }
+    console.log(outline_geoms)
+    this.geom = THREE.BufferGeometryUtils.mergeBufferGeometries(geoms, false);
+    this.outline_geom = THREE.BufferGeometryUtils.mergeBufferGeometries(outline_geoms, false);
+    this.complete = true;
   }
 }

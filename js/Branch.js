@@ -31,7 +31,7 @@ class Branch {
             vector.subVectors(this.pos, this.parent.pos);
             
             // Create the cylinder
-            let geometry = new THREE.CylinderGeometry(this.width, this.parent.width, vector.length()+0.1, 32, 1, true);
+            let geometry = new THREE.CylinderBufferGeometry(this.width, this.parent.width, vector.length()+0.1, 32, 1, true);
             let material = new THREE.MeshBasicMaterial( {color: 0x000000} );
             let cylinder = new THREE.Mesh( geometry, material );
             
@@ -47,49 +47,76 @@ class Branch {
             outlineMesh1.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
             outlineMesh1.scale.multiplyScalar(1.1);
 
-            let meshes = [];
-            let outline_meshes = [];
+            // let meshes = [];
+            // let outline_meshes = [];
+            let geoms = [];
+            let outlineGeoms = [];
 
-            outline_meshes.push(outlineMesh1);
-            meshes.push(cylinder);
+            // outline_meshes.push(outlineMesh1);
+            outlineMesh1.updateMatrix();
+            outlineMesh1.geometry.applyMatrix(outlineMesh1.matrix);
+            outlineGeoms.push(outlineMesh1.geometry);
+
+            // meshes.push(cylinder);
+            cylinder.updateMatrix();
+            cylinder.geometry.applyMatrix(cylinder.matrix);
+            geoms.push(cylinder.geometry);
             
             // Add circle to the end of branches so you can't see into the tree
             if (this.children.length == 0){
-                let geometry = new THREE.CircleGeometry( this.width, 32 );
+                let geometry = new THREE.CircleBufferGeometry( this.width, 32 );
                 let material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
                 geometry.rotateX(-PI/2);
                 let circle = new THREE.Mesh( geometry, material );
                 
                 circle.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
                 circle.position.copy(vector.clone().add(this.parent.pos).add(vector));
-                meshes.push(circle)
+                // meshes.push(circle);
+
+                circle.updateMatrix();
+                circle.geometry.applyMatrix(circle.matrix);
+                geoms.push(circle.geometry);
 
                 let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.BackSide } );
                 let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
                 outlineMesh2.quaternion.setFromUnitVectors(axis, vector.clone().normalize());
                 outlineMesh2.position.copy(vector.clone().add(this.parent.pos).add(vector));
                 outlineMesh2.scale.multiplyScalar(1.1);
-                outline_meshes.push(outlineMesh2);
+                // outline_meshes.push(outlineMesh2);
+
+                outlineMesh2.updateMatrix();
+                outlineMesh2.geometry.applyMatrix(outlineMesh2.matrix)
+                outlineGeoms.push(outlineMesh2.geometry);
             }
 
             // Add circle to the bottom of the root so that you can't see into the tree
             if (this.parent.parent === null){
-                let geometry = new THREE.CircleGeometry( this.width, 32 );
-                let material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+                let geometry = new THREE.CircleBufferGeometry( this.width, 32 );
+                
                 geometry.rotateX(PI/2);
-                let circle = new THREE.Mesh( geometry, material );
-                circle.position.add(tree.pos);
-                circle.material.side = THREE.DoubleSide;
-                meshes.push(circle);
+                geometry.translate(tree.pos.x, tree.pos.y, tree.pos.z)
+                geoms.push(geometry)
 
-                let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
-                let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
-                outlineMesh2.position.add(tree.pos);
-                outlineMesh2.scale.multiplyScalar(1.1);
-                outline_meshes.push(outlineMesh2);
+                let outlineGeom = new THREE.BufferGeometry();
+                outlineGeom.copy(geometry);
+                outlineGeom.scale(1.1, 1.1, 1.1)
+                outlineGeoms.push(outlineGeom)
+
+                // let material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+                // let circle = new THREE.Mesh( geometry, material );
+                // circle.position.add(tree.pos);
+                // circle.material.side = THREE.DoubleSide;
+                // meshes.push(circle);
+
+                //let outlineMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide } );
+                //let outlineMesh2 = new THREE.Mesh( geometry, outlineMaterial );
+                //outlineMesh2.position.add(tree.pos);
+                //outlineMesh2.scale.multiplyScalar(1.1);
+                //outline_meshes.push(outlineMesh2);
+                
             }
 
-            return [meshes, outline_meshes]
+            return [geoms, outlineGeoms]
 
         }
     }

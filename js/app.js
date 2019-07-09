@@ -3,7 +3,8 @@ const PI = Math.PI
 // three.js globals
 let container;
 let camera;
-let cameraY = 7;
+let targetCameraY = 7;
+let currentCameraY = 7;
 let controls;
 let renderer;
 let scene;
@@ -18,14 +19,23 @@ function mapRange(value, low1, high1, low2, high2) {
 }
 
 // tree globals
-let maxDist = 20;
-let minDist = 0.1;
+const maxDist = 20;
+const minDist = 0.1;
 
 let treeMesh;
 let treeOutlineMesh
 
 let amount = 150
 let tree;
+
+let mousePosition;
+let normalizedOrientation = new THREE.Vector3();
+let cameraAmpl = {x: 10, y: 10};
+let cameraVelocity = 0.1;
+
+let scrolling;
+let scrollDetector;
+const fuse = 300;
 
 // start everything
 init();
@@ -44,14 +54,18 @@ function init() {
   //createControls();
   createLights();
   createRenderer();
-  createPlane();
+  createGround();
+  //createPlane();
 
   // Event listeners
   window.addEventListener( 'resize', onWindowResize );
-  window.addEventListener("scroll", updateCamera);
+  window.addEventListener('scroll', updateCamera);
+  window.addEventListener('mousemove', handleMouseMove);
+  mousePosition = {x: container.clientWidth/2, y:container.clientHeight/2}
 
   // Start camera on correct location
   updateCamera();
+  scrolling = false;
 
   // start the animation loop
   renderer.setAnimationLoop( () => {
@@ -61,7 +75,7 @@ function init() {
 
   } );
 
-  createTree();
+  tree = new Tree(amount);
 
   const sphereGeom = new THREE.SphereBufferGeometry(0.5, 12, 12);
   const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color:"lightgreen"})
@@ -79,11 +93,14 @@ function init() {
                 .onComplete(() => planted = true)
                 .start();
 
-  // let rotAngle = {a: 0};
-  // const tweenRot = new TWEEN.Tween(rotAngle).to({a: 0.00000001*PI}, 5000)
-  //                  .easing(TWEEN.Easing.Quadratic.Out)
-  //                  .onUpdate(() => {sphere.rotateY(rotAngle); console.log(rotAngle);})
-  //                  .start();
+  if (!scrollDetector){
+    scrollDetector = setTimeout(bomb, fuse)
+  }
+}
+
+function bomb(){
+  scrolling = false;
+  scrollDetector = setTimeout(bomb, fuse);
 }
 
 let t = 0;
@@ -94,8 +111,13 @@ function update() {
 
   TWEEN.update();
 
-  if(tree){
-    for (let i = 0; i < 10; i++){tree.nextMerge()}
+  if(tree.finished){
+    //for (let i = 0; i < 5; i++){tree.nextMerge()}
+
+    if (!tree.complete){
+      tree.merge();
+      createTree();
+    }
     
     // Grow animation
     if(tree.complete){
@@ -107,8 +129,26 @@ function update() {
   }
 
   // Camera rotation in circle
-  camera.position.set(30*Math.sin(t), cameraY, 30*Math.cos(t));
-  camera.lookAt(0, (7+2*cameraY)/3, 0);
+  // camera.position.set(30*Math.sin(t), targetCameraY, 30*Math.cos(t));
+
+  if (!scrolling){  
+    normalizedOrientation.set(
+      -((mousePosition.x / container.clientWidth) - 0.5) * cameraAmpl.x,
+      ((mousePosition.y / container.clientHeight) - 0.5) * cameraAmpl.y,
+      0.5,
+    );
+    camera.position.x += (normalizedOrientation.x - camera.position.x) * cameraVelocity;
+    camera.position.y += (normalizedOrientation.y - camera.position.y + targetCameraY) * cameraVelocity;
+    currentCameraY = targetCameraY;
+  }
+  else{
+    camera.position.y += (normalizedOrientation.y - camera.position.y + targetCameraY) * 0.2;
+    currentCameraY = camera.position.y - normalizedOrientation.y;
+  }
+
+  camera.lookAt(0, (7+2*currentCameraY)/3, 0);
+
+  //camera.lookAt(0, 7, 0);
   t += 0.002;
 }
 
@@ -136,7 +176,7 @@ function createCamera(){
   camera.position.set( 0, 7, 30 );
 }
 
-function createPlane(){
+function createGround(){
   const geometry = new THREE.PlaneBufferGeometry( 200, 200, 70, 70);
   geometry.rotateX(-PI/2);
 
@@ -146,6 +186,15 @@ function createPlane(){
   //mesh.position.y += 0.01
   scene.add( mesh );
   scene.add(new THREE.Mesh( new THREE.PlaneBufferGeometry( 200, 200, 1, 1).rotateX(-PI/2), new THREE.MeshBasicMaterial({color: "black", side:THREE.DoubleSide})))
+}
+
+function createPlane(){
+  const geometry = new THREE.PlaneBufferGeometry( 25, 40, 70, 70);
+
+  const material = new THREE.MeshBasicMaterial( { color: "darkgreen", wireframe: false } );
+  const plane = new THREE.Mesh( geometry, material )
+  plane.position.y -= 20;
+  scene.add(plane);
 }
 
 function createLights(){
@@ -229,12 +278,23 @@ function createTree() {
     side: THREE.BackSide
   });
 
-  tree = new Tree(amount);
+  console.log(tree);
   treeMesh = new THREE.Mesh(tree.geom, tMat);
   treeOutlineMesh = new THREE.Mesh(tree.outline_geom, outlineMat);
+  scene.add(treeMesh);
+  scene.add(treeOutlineMesh);
 }
 
-function updateCamera(ev) {
-  cameraY = 7 - window.scrollY / 20.0;
-  //console.log(cameraY)
+function updateCamera(event) {
+  scrolling = true;
+  targetCameraY = 7 - window.scrollY / 20.0;
+
+  clearTimeout(scrollDetector)
+  scrollDetector = setTimeout(bomb, fuse)
+}
+
+// adapted from https://github.com/Jeremboo/animated-mesh-lines/blob/master/app/decorators/HandleCameraOrbit.js
+function handleMouseMove(event) {
+    mousePosition.x = event.clientX || (event.touches && event.touches[0].clientX) || mousePosition.x;
+    mousePosition.y = event.clientY || (event.touches && event.touches[0].clientY) || mousePosition.y;
 }
