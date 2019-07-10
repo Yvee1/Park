@@ -8,7 +8,7 @@ let currentCameraY = 7;
 let controls;
 let renderer;
 let scene;
-let mesh;
+
 let sphere;
 let sphereY;
 let planted = false;
@@ -54,7 +54,7 @@ function init() {
   // create a Scene
   scene = new THREE.Scene();
   scene.background = new THREE.Color( "black" );
-  scene.fog = new THREE.Fog(0x000000, 20, 100);
+  // scene.fog = new THREE.Fog(0x000000, 20, 100);
 
   createCamera();
   //createControls();
@@ -176,22 +176,43 @@ function createCamera(){
   const aspect = container.clientWidth / container.clientHeight;
 
   const near = 0.1;
-  const far = 100;
+  const far = 50;
 
   camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
   camera.position.set( 0, 7, 30 );
 }
 
 function createGround(){
-  const geometry = new THREE.PlaneBufferGeometry( 200, 200, 70, 70);
+  const geometry = new THREE.PlaneGeometry( 20, 20, 70, 70);
   geometry.rotateX(-PI/2);
 
-  const material = new THREE.MeshBasicMaterial( { color: "white", wireframe: true } );
+  // let min = Infinity;
+  // for (vertex of geometry.vertices){
+  //   if (Math.abs(vertex.x) < min){
+  //     min = Math.abs(vertex.x);
+  //   }
+  // }
+  // for (let i = 0; i < geometry.vertices.length; i++){
+  //   if (!(Math.abs(geometry.vertices[i].x) == min && Math.abs(geometry.vertices[i].z) == min)){
+  //     geometry.vertices[i].y = Math.random();
+  //   }
+  // }
+  for (let vertex of geometry.vertices){
+    vertex.y = Math.random();
+  }
 
-  mesh = new THREE.Mesh( geometry, material );
-  //mesh.position.y += 0.01
+  const material = new THREE.MeshBasicMaterial( { color: "green", wireframe: true } );
+
+  const mesh = new THREE.Mesh( geometry, material );
+  mesh.position.y -= 0.3;
   scene.add( mesh );
-  scene.add(new THREE.Mesh( new THREE.PlaneBufferGeometry( 200, 200, 1, 1).rotateX(-PI/2), new THREE.MeshBasicMaterial({color: "black", side:THREE.DoubleSide})))
+  const solid = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial( { color: "black", wireframe: false, opacity: 0.3, transparent: true,
+  polygonOffset: true,
+  polygonOffsetFactor: 1, // positive value pushes polygon further away
+  polygonOffsetUnits: 1 } ));
+  solid.position.y -= 0.3;
+  scene.add(solid);
+  //scene.add(new THREE.Mesh( new THREE.PlaneBufferGeometry( 20, 20, 7, 7).rotateX(-PI/2), new THREE.MeshBasicMaterial({color: "orange", side:THREE.DoubleSide, wireframe:true})))
 }
 
 function createPlane(){
