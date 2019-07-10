@@ -72,7 +72,7 @@ function init() {
   } else {
     window.addEventListener('mousemove', handleMouseMove);
   }
-  mousePosition = {x: container.clientWidth/2, y:container.clientHeight/2}
+  mousePosition = {x: container.clientWidth/2, y:window.innerHeight/2}
 
   // Start camera on correct location
   updateCamera();
@@ -174,7 +174,7 @@ function createControls(){
 function createCamera(){
   // set up the options for a perspective camera
   const fov = 35;
-  const aspect = container.clientWidth / container.clientHeight;
+  const aspect = container.clientWidth / window.innerHeight;
 
   const near = 0.1;
   const far = 70;
@@ -238,7 +238,7 @@ function createLights(){
 function createRenderer(){
   // create a WebGLRenderer and set its width and height
   renderer = new THREE.WebGLRenderer( { antialias: true, canvas: document.getElementById("viewport") } );
-  renderer.setSize( container.clientWidth, container.clientHeight );
+  renderer.setSize( container.clientWidth, window.innerHeight );
 
   renderer.setPixelRatio( window.devicePixelRatio );
 }
@@ -246,13 +246,13 @@ function createRenderer(){
 // a function that will be called every time the window gets resized.
 function onWindowResize() {
   // set the aspect ratio to match the new browser window aspect ratio
-  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.aspect = container.clientWidth / window.innerHeight;
 
   // update the camera's frustum
   camera.updateProjectionMatrix();
 
   // update the size of the renderer and the canvas
-  renderer.setSize( container.clientWidth, container.clientHeight );
+  renderer.setSize( container.clientWidth, window.innerHeight );
 }
 
 function createTree() {
@@ -328,7 +328,7 @@ function handleMouseMove(event) {
     mousePosition.y = event.clientY || (event.touches && event.touches[0].clientY) || mousePosition.y;
     normalizedOrientation.set(
       -((mousePosition.x / container.clientWidth) - 0.5) * cameraAmpl.x,
-      ((mousePosition.y / container.clientHeight) - 0.5) * cameraAmpl.y,
+      ((mousePosition.y / window.innerHeight) - 0.5) * cameraAmpl.y,
       0.5,
     );
   }
