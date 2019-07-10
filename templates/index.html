@@ -29,10 +29,15 @@
 
     {% for id, sketch in data %}
     <div class="sketch">
-      <div class="stretchy-wrapper">
-        <div class="card" style="background-image: url(imgs/{{ id }}.png)">
+      <a href="{{ id }}.html">
+        <div class="stretchy-wrapper">
+          <div class="card" style="background-image: url(imgs/{{ id }}.png)">
+            <div class="overlay">
+              <div class="text">Click me</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </a>
       <span class="sketch-title">{{ sketch.title }}</span>
     </div>
     {% endfor %}

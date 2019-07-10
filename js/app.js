@@ -56,6 +56,7 @@ function init() {
   scene.background = new THREE.Color( "black" );
   // scene.fog = new THREE.Fog(0x000000, 20, 100);
 
+  //makeText();
   createCamera();
   //createControls();
   createLights();
@@ -176,7 +177,7 @@ function createCamera(){
   const aspect = container.clientWidth / container.clientHeight;
 
   const near = 0.1;
-  const far = 50;
+  const far = 70;
 
   camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
   camera.position.set( 0, 7, 30 );
@@ -343,3 +344,24 @@ function handleOrientationMove(event) {
   // TODO handle orientation.y
 }
 
+function makeText(){
+  let loader = new THREE.FontLoader();
+
+  loader.load( 'js/fonts/gentilis.json', function ( font ) {
+    let geometry = new THREE.TextGeometry( 'Park', {
+      font: font,
+      size: 5,
+      height: 1,
+      curveSegments: 3,
+
+    } );
+    let mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({color: "grey", wireframe: false}))
+    mesh.position.x -= 7;
+    mesh.position.y += 10;
+    mesh.position.z -= 10;
+    scene.add(mesh);
+  } );
+
+  
+
+}
