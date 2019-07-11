@@ -1,9 +1,12 @@
 module.exports = {
     pytree: {
-        title: "Pythagoras tree"
+        title: "Pythagoras tree",
+        color: "black"
     },
 
     fractal: {
-        title: "Fractal tree"
+        title: "Fractal tree",
+        color: "white"
+
     }
 }
