@@ -7,6 +7,10 @@ module.exports = {
     fractal: {
         title: "Fractal tree",
         color: "white"
+    },
 
+    venation: {
+        title: "Leaf venation",
+        color: "black"
     }
 }
