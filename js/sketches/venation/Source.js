@@ -46,24 +46,11 @@ class Source {
 
     checkInsideLeaf(){
         if (this.position.x <= width/2){
-            let interX = curve1.intersects({p1: {x: 0, y: this.position.y}, p2: {x: width/2, y: this.position.y}}).map(t => curve1.get(t));
-            console.log(interX);
-            if (interX.length == 1){
-                this.contained = interX[0].x < this.position.x;
-            }
-            if (interX.length == 2){
-                // XOR
-                this.contained = interX[0].x > this.position.x ? !(interX[1].x > this.position.x) : (interX[1].x > this.position.x);
-            }
+            let interX = curve1.intersects({p1: {x: 0, y: this.position.y}, p2: {x: this.position.x, y: this.position.y}});
+            this.contained = interX.length % 2;
         } else{
-            let interX = curve2.intersects({p1: {x: width/2, y: this.position.y}, p2: {x: width, y: this.position.y}}).map(t => curve2.get(t));
-            if (interX.length == 1){
-                this.contained = interX[0].x > this.position.x;
-            }
-            if (interX.length == 2){
-                // XOR
-                this.contained = interX[0].x > this.position.x ? !(interX[1].x > this.position.x) : (interX[1].x > this.position.x);
-            }
+            let interX = curve2.intersects({p1: {x: this.position.x, y: this.position.y}, p2: {x: width, y: this.position.y}});
+            this.contained = interX.length % 2;
         }
     }
 }
