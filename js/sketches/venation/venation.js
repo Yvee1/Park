@@ -3,12 +3,12 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 let began;
 
-const birthDistVein = 50;
-const birthDistSource = 50;
+const birthDistVein = 30;
+const birthDistSource = 10;
 const maxWidth = 3*width/4;
 const maxHeight = 3*height/4;
-const nSources = 80;
-let sources = new Array(nSources);
+const nSources = Math.round(width*height/500);
+const killDist = 10;
 
 const canvas = window.document.createElement("canvas")
 canvas.style.width = width + "px"
@@ -41,7 +41,7 @@ let fromEdge = 1/8;
 
 let leaf = new PIXI.Graphics();
 app.stage.addChild(leaf);
-leaf.lineStyle(10, 0x00ff00, 1);
+leaf.lineStyle(5, 0x00ff00, 1);
 leaf.moveTo(width/2, height-fromEdge*height);
 
 let c1 = new p5.Vector(Math.random() * width/2, Math.random() * height/2);
@@ -104,14 +104,6 @@ endPoint.on('pointerdown', onDragStart)
         .on('pointerupoutside', onDragEnd)
         .on('pointermove', onDragMove);
 
-
-
-for (let i = 0; i < nSources; i++){
-    sources[i] = new Source();
-}
-
-
-
 let curve1 = new Bezier(width/2, height-height*fromEdge, c1.x, c1.y, c2.x, c2.y, width/2, height/2);
 let curve2 = new Bezier(width/2, height-height*fromEdge, width-c1.x, c1.y, width-c2.x, c2.y, width/2, height/2)
 let table1 = curve1.getLUT();
@@ -121,11 +113,14 @@ let scale = 1;
 let currentWidth = 0;
 let currentHeight = 0;
 
+let veins = new Veins();
+
 app.ticker.add(() => {
     leaf.clear();
     leaf.moveTo(width/2, height-height*fromEdge);
     let leftX = Infinity;
     let topY = Infinity;
+    let bottomY = 0;
 
     for (point of table1){
         leaf.lineTo(point.x, point.y);
@@ -135,9 +130,12 @@ app.ticker.add(() => {
         if (point.y < topY){
             topY = point.y;
         }
+        if (point.y > bottomY){
+            bottomY = point.y;
+        }
     }
     currentWidth = (width/2-leftX)*2;
-    currentHeight = (height-height*fromEdge-topY);
+    currentHeight = (bottomY-topY);
 
     leaf.moveTo(width/2, height-height*fromEdge);
     for (point of table2){
@@ -151,13 +149,11 @@ app.ticker.add(() => {
         curve2 = new Bezier(mx, my, width-((control1.position.x-mx)*scale+mx), (control1.position.y-my)*scale + my, width-((control2.position.x-mx)*scale+mx), (control2.position.y-my)*scale+my, (endPoint.x-mx)*scale+mx, (endPoint.y-my)*scale+my);
         table2 = curve2.getLUT();
  
-
-        for (let source of sources){
-            source.show();
-        }
+        veins.show(); 
+        veins.grow();
 
         if (currentWidth < maxWidth && currentHeight < maxHeight){
-            scale += 0.001;
+            scale += 0.005;
         }
     }
 })

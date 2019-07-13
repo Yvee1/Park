@@ -1,22 +1,6 @@
 class Source {
-    constructor(){
-        let rand;
-        let found;
-        while (!found){
-            found = true;
-            rand = new p5.Vector(Math.random() * maxWidth + width/2 - maxWidth/2,height-height*fromEdge - Math.random() * maxHeight);
-            for (let source of sources){
-                if (source){
-                    if (source.position){
-                        if (distSqr(rand, source.position) < birthDistSource**2){
-                            found = false;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        this.position = rand;
+    constructor(pos){
+        this.position = pos;
         this.graphics = new PIXI.Graphics();
         app.stage.addChild(this.graphics);
 
@@ -32,16 +16,16 @@ class Source {
 
         if (this.contained){
             this.graphics.beginFill(0xffff00, 1);
-        } else{
-            this.graphics.beginFill(0x000000, 1);
-        }
+        // } else{
+        //     this.graphics.beginFill(0x000000, 1);
+        // }
 
-        this.graphics.drawCircle(this.position.x, this.position.y, 10);
+        this.graphics.drawCircle(this.position.x, this.position.y, 2);
         this.graphics.endFill();
         this.graphics.beginFill(0x666666, 0.5);
         this.graphics.drawCircle(this.position.x, this.position.y, birthDistSource/2);
         this.graphics.endFill();
-        
+        }
     }
 
     checkInsideLeaf(){
