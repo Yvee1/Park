@@ -4,8 +4,25 @@
 {% block libs %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.0.4/pixi.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+  <script src="js/libs/bezier.js"></script>
 {% endblock %}
 
 {% block sketch %}
+  <button id="start" type="submit" onclick="start()">Start</button>
+  <script type="text/javascript" src="js/sketches/venation/Node.js"></script>
+  <script type="text/javascript" src="js/sketches/venation/Source.js"></script>
   <script type="text/javascript" src="js/sketches/venation/venation.js"></script>
+{% endblock %}
+
+{% block style %}
+{{ super() }}
+#start {
+  margin: auto;
+  display: block;
+  position: absolute;
+  width: 50px;
+  left: 0;
+  right: 0;
+}
+
 {% endblock %}
