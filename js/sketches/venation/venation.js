@@ -3,8 +3,8 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 let began;
 
-const birthDistVein = 30;
-const birthDistSource = 10;
+const birthDistVein = 20;
+const birthDistSource = 5;
 const maxWidth = 3*width/4;
 const maxHeight = 3*height/4;
 const nSources = Math.round(width*height/500);
@@ -41,15 +41,14 @@ let fromEdge = 1/8;
 
 let leaf = new PIXI.Graphics();
 app.stage.addChild(leaf);
-leaf.lineStyle(5, 0x00ff00, 1);
-leaf.moveTo(width/2, height-fromEdge*height);
 
-let c1 = new p5.Vector(Math.random() * width/2, Math.random() * height/2);
-let c2 = new p5.Vector(Math.random() * width/2, Math.random() * height/2);
+let c1 = new p5.Vector(width/4 + Math.random() * width/4, height - 50 - Math.random() * height/4);
+let c2 = new p5.Vector(width/4 + Math.random() * width/4, height - 50 -Math.random() * height/4);
 
 let control1 = new PIXI.Graphics();
 control1.interactive = true;
 control1.buttonMode = true;
+control1.bottom = true;
 app.stage.addChild(control1);
 
 let control2 = new PIXI.Graphics();
@@ -95,7 +94,7 @@ endPoint.beginFill(0xff00ff, 1);
 endPoint.drawCircle(0, 0, 20);
 endPoint.endFill();
 endPoint.position.x = width/2;
-endPoint.position.y = height/2;
+endPoint.position.y = 3*height/4;
 endPoint.hitArea = new PIXI.Circle(0, 0, 20);
 
 
@@ -104,8 +103,8 @@ endPoint.on('pointerdown', onDragStart)
         .on('pointerupoutside', onDragEnd)
         .on('pointermove', onDragMove);
 
-let curve1 = new Bezier(width/2, height-height*fromEdge, c1.x, c1.y, c2.x, c2.y, width/2, height/2);
-let curve2 = new Bezier(width/2, height-height*fromEdge, width-c1.x, c1.y, width-c2.x, c2.y, width/2, height/2)
+let curve1 = new Bezier(width/2, height-height*fromEdge, c1.x, c1.y, c2.x, c2.y, width/2, endPoint.position.y);
+let curve2 = new Bezier(width/2, height-height*fromEdge, width-c1.x, c1.y, width-c2.x, c2.y, width/2, endPoint.position.y)
 let table1 = curve1.getLUT();
 let table2 = curve2.getLUT();
 
@@ -116,44 +115,54 @@ let currentHeight = 0;
 let veins = new Veins();
 
 app.ticker.add(() => {
-    leaf.clear();
-    leaf.moveTo(width/2, height-height*fromEdge);
-    let leftX = Infinity;
-    let topY = Infinity;
-    let bottomY = 0;
+    if (!veins.finished){
+        leaf.clear();
+        leaf.moveTo(width/2, height);
+        leaf.lineStyle(10, 0x089000, 1);
+        leaf.lineTo(width/2, height-height*fromEdge);
+        let leftX = Infinity;
+        let topY = Infinity;
+        let bottomY = 0;
 
-    for (point of table1){
-        leaf.lineTo(point.x, point.y);
-        if (point.x < leftX){
-            leftX = point.x;
+        leaf.lineStyle(5, 0x066000, 1);
+        leaf.beginFill(0x089000, 1);
+        for (point of table1){
+            leaf.lineTo(point.x, point.y);
+            if (point.x < leftX){
+                leftX = point.x;
+            }
+            if (point.y < topY){
+                topY = point.y;
+            }
+            if (point.y > bottomY){
+                bottomY = point.y;
+            }
         }
-        if (point.y < topY){
-            topY = point.y;
-        }
-        if (point.y > bottomY){
-            bottomY = point.y;
-        }
-    }
-    currentWidth = (width/2-leftX)*2;
-    currentHeight = (bottomY-topY);
+        currentWidth = (width/2-leftX)*2;
+        currentHeight = (bottomY-topY);
 
-    leaf.moveTo(width/2, height-height*fromEdge);
-    for (point of table2){
-        leaf.lineTo(point.x, point.y);
-    }
-    if(began){
-        let mx = width/2;
-        let my = height-height*fromEdge;
-        curve1 = new Bezier(mx, my, (control1.position.x-mx)*scale+mx, (control1.position.y-my)*scale + my, (control2.position.x-mx)*scale+mx, (control2.position.y-my)*scale+my, (endPoint.x-mx)*scale+mx, (endPoint.y-my)*scale+my);
-        table1 = curve1.getLUT();
-        curve2 = new Bezier(mx, my, width-((control1.position.x-mx)*scale+mx), (control1.position.y-my)*scale + my, width-((control2.position.x-mx)*scale+mx), (control2.position.y-my)*scale+my, (endPoint.x-mx)*scale+mx, (endPoint.y-my)*scale+my);
-        table2 = curve2.getLUT();
- 
-        veins.show(); 
-        veins.grow();
+        leaf.moveTo(width/2, height-height*fromEdge);
+        for (point of table2){
+            leaf.lineTo(point.x, point.y);
+        }
+        leaf.endFill();
+        if(began){
+            let mx = width/2;
+            let my = height-height*fromEdge;
+            curve1 = new Bezier(mx, my, (control1.position.x-mx)*scale+mx, (control1.position.y-my)*scale + my, (control2.position.x-mx)*scale+mx, (control2.position.y-my)*scale+my, (endPoint.x-mx)*scale+mx, (endPoint.y-my)*scale+my);
+            table1 = curve1.getLUT();
+            curve2 = new Bezier(mx, my, width-((control1.position.x-mx)*scale+mx), (control1.position.y-my)*scale + my, width-((control2.position.x-mx)*scale+mx), (control2.position.y-my)*scale+my, (endPoint.x-mx)*scale+mx, (endPoint.y-my)*scale+my);
+            table2 = curve2.getLUT();
+    
+            veins.show(); 
+            veins.grow();
 
-        if (currentWidth < maxWidth && currentHeight < maxHeight){
-            scale += 0.005;
+            if (currentWidth < maxWidth && currentHeight < maxHeight){
+                scale += 0.005;
+            }
+            else {
+                veins.grown = true;
+            }
         }
     }
 })
@@ -179,6 +188,9 @@ function onDragMove() {
         const newPosition = this.data.getLocalPosition(this.parent);
         if (newPosition.x > width/2 || this.fixedX){
             newPosition.x = width/2;
+        }
+        if (this.bottom && newPosition.y < height/2){
+            newPosition.y = height/2;
         }
         this.position.x = newPosition.x;
         this.position.y = newPosition.y;

@@ -1,5 +1,7 @@
 class Veins {
     constructor(){
+        this.finished = false;
+        this.grown = false;
         this.sources = new Array(nSources);
         this.nodes = [];
 
@@ -49,6 +51,10 @@ class Veins {
     }
     
     grow() {
+        if (this.grown){
+            this.finished = true;
+        }
+
         for (let source of this.sources){
             if (source.contained){
                 let closest;
@@ -63,6 +69,7 @@ class Veins {
                     if (dist < minDist){
                         minDist = dist;
                         closest = node;
+                        this.finished = false;
                     }
                 }
 
@@ -89,5 +96,9 @@ class Veins {
                 node.reset();
             }
         }
+    }
+
+    calculateWidth(){
+
     }
 }

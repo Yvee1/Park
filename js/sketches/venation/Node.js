@@ -14,7 +14,7 @@ class Node {
         this.graphics.clear();
 
         this.graphics.lineStyle(0)
-        this.graphics.beginFill(0x000000, 1);
+        this.graphics.beginFill(0x00ff00, 1);
         this.graphics.drawCircle(this.position.x, this.position.y, 2);
         this.graphics.endFill();
         
