@@ -49,18 +49,15 @@ let control1 = new PIXI.Graphics();
 control1.interactive = true;
 control1.buttonMode = true;
 control1.bottom = true;
-app.stage.addChild(control1);
 
 let control2 = new PIXI.Graphics();
 control2.interactive = true;
 control2.buttonMode = true;
-app.stage.addChild(control2);
 
 let endPoint = new PIXI.Graphics();
 endPoint.interactive = true;
 endPoint.buttonMode = true;
 endPoint.fixedX = true;
-app.stage.addChild(endPoint);
 
 control1.lineStyle(0)
 control1.beginFill(0xff0000, 1);
@@ -114,8 +111,22 @@ let currentHeight = 0;
 
 let veins = new Veins();
 
+let bezierLines = new PIXI.Graphics();
+app.stage.addChild(bezierLines);
+app.stage.addChild(control1);
+app.stage.addChild(control2);
+app.stage.addChild(endPoint);
+
 app.ticker.add(() => {
     if (!veins.finished){
+        bezierLines.clear();
+        bezierLines.lineStyle(4, 0x000000, 0.5);
+        bezierLines.moveTo(width/2, height-height*fromEdge);
+        bezierLines.lineTo(control1.position.x, control1.position.y);
+
+        bezierLines.moveTo(endPoint.position.x, endPoint.position.y);
+        bezierLines.lineTo(control2.position.x, control2.position.y);
+
         leaf.clear();
         leaf.moveTo(width/2, height);
         leaf.lineStyle(10, 0x089000, 1);
@@ -189,8 +200,8 @@ function onDragMove() {
         if (newPosition.x > width/2 || this.fixedX){
             newPosition.x = width/2;
         }
-        if (this.bottom && newPosition.y < height/2){
-            newPosition.y = height/2;
+        if (this.bottom && newPosition.y < endPoint.position.y){
+            newPosition.y = endPoint.position.y;
         }
         this.position.x = newPosition.x;
         this.position.y = newPosition.y;
@@ -206,6 +217,7 @@ function start(){
     app.stage.removeChild(control1);
     app.stage.removeChild(control2);
     app.stage.removeChild(endPoint);
+    app.stage.removeChild(bezierLines);
     began = true;
     table1 = curve1.getLUT();
 }
