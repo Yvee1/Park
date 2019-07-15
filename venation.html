@@ -37,9 +37,11 @@ html, body {
   position: absolute;
   text-decoration: none;
   color: black;
-  top: 10px;
-  left: 10px;
-  font-size: 2em;
+  top: -0.1em;
+  left: 0.3em;
+  font-size: 5em;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
 }
 
 i {
@@ -49,18 +51,10 @@ i {
   padding: 6px;
 }
 
-.left {
-  transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  position: relative;
-  top: -18px;
-  left: -5px;
-}
-
 </style>
 
 <body>
-  <a id="back" href="/Park"><i class="arrow left"></i>-1</a>
+  <a id="back" href="/Park">⇭</a>
   
   <button id="start" type="submit" onclick="start()">Start</button>
   <script type="text/javascript" src="js/sketches/venation/Node.js"></script>
