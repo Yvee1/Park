@@ -7,17 +7,26 @@ class Node {
         this.count = 0;
         this.dir = dir;
         this.parent = parent;
+        this.children = [];
         this.len = 5;
+
+        this.width = 0;
+        this.layer = 1;
     }
 
     show(){
-        this.graphics.clear();
+        this.calculateWidth();
+        if (this.parent !== null){
+            this.graphics.clear();
 
-        this.graphics.lineStyle(0)
-        this.graphics.beginFill(0x00ff00, 1);
-        this.graphics.drawCircle(this.position.x, this.position.y, 2);
-        this.graphics.endFill();
-        
+            if (this.width > 0){
+                this.graphics.lineStyle(this.width, 0x00ff00, 1);
+            } else{
+                this.graphics.lineStyle(2, 0x00ff00, 1);
+            }
+            this.graphics.moveTo(this.parent.position.x, this.parent.position.y);
+            this.graphics.lineTo(this.position.x, this.position.y);
+        }
     }
 
     next(){
@@ -25,11 +34,35 @@ class Node {
         nextDir.mult(this.len);
 
         let nextPos = p5.Vector.add(this.position, nextDir);
-        return new Node(this, nextPos.x, nextPos.y);
+        let child = new Node(this, nextPos.x, nextPos.y);
+        child.layer = this.layer;
+        if (this.children.length > 0){
+            child.layer += 1;
+        }
+        this.children.push(child);
+        return child;
     }
 
     reset(){
         this.dir.mult(0);
         this.count = 0;
+    }
+
+    calculateWidth(){
+        // Base case
+        if (this.children.length == 0){
+            this.width = 0.5;
+            return 1;
+        }
+
+        let cubed = 0;
+        for (let child of this.children){
+            cubed += child.calculateWidth() ** 3;
+        }
+        if (this.layer <= 2){
+            cubed += 1;
+        }
+        this.width = cubed ** (1/3);
+        return this.width
     }
 }

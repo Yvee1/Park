@@ -96,9 +96,14 @@ class Veins {
                 node.reset();
             }
         }
+
+        if (this.finished){
+            this.calculateWidth();
+            this.show();
+        }
     }
 
     calculateWidth(){
-
+        this.nodes[0].calculateWidth();
     }
 }
