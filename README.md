@@ -32,7 +32,17 @@ Let’s plant a…
 why not plant them ALL?
 
 ## Screenshots
+### Space colonization
 ![3D model of tree with polygon grass](imgs/teaser.png)
 
-## Misc
+### Pythagoras tree
+![Abstract tree made out of squares](imgs/pytree.png)
+
+### Fractal tree
+![Abstract fractal tree made out of white lines](imgs/fractal.png)
+
+### Leaf venation
+![A model of a leaf with venations](imgs/venation.png)
+
+### Misc
 Inspired by the [collection of three.js sketches](https://github.com/ykob/sketch-threejs) by ykob, Daniel Shiffman's [algorithmic botany series](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6bxNsa_3SfCPyF9Md9XvXhR) and [the algorithmic botany website](http://algorithmicbotany.org/).
