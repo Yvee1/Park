@@ -23,12 +23,39 @@ html, body {
 }
 
 #start {
-  margin: auto;
+  background-color: seagreen;
+  color: white;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 1em;
+  border: 5px solid seagreen;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+button:focus {
+  outline: none;
+}
+
+#reset {
+  background-color: tomato;
+  color: white;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 1em;
+  border: 5px solid tomato;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+#interface {
   display: block;
   position: absolute;
-  width: 50px;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 5px;
+  text-align: center;
 }
 
 
@@ -42,6 +69,7 @@ html, body {
   font-size: 5em;
   transform: rotate(-90deg);
   -webkit-transform: rotate(-90deg);
+  -webkit-tap-highlight-color: transparent;
 }
 
 i {
@@ -56,7 +84,10 @@ i {
 <body>
   <a id="back" href="/Park">⇭</a>
   
-  <button id="start" type="submit" onclick="start()">Start</button>
+  <div id="interface">
+    <button id="start" type="submit" onclick="start()">Start growing</button>
+    <button id="reset" type="submit" onclick="reset()">Reset</button>
+  </div>
   <script type="text/javascript" src="js/sketches/venation/Node.js"></script>
   <script type="text/javascript" src="js/sketches/venation/Source.js"></script>
   <script type="text/javascript" src="js/sketches/venation/Veins.js"></script>

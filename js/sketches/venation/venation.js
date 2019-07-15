@@ -36,6 +36,7 @@ function resize() {
     canvas.style.width = width + "px"
     canvas.style.height = height + "px"
 
+    reset();
 }
 let fromEdge = 1/8;
 
@@ -220,4 +221,20 @@ function start(){
     app.stage.removeChild(bezierLines);
     began = true;
     table1 = curve1.getLUT();
+}
+
+function reset(){
+    began = false;
+    scale = 1;
+    curve1 = new Bezier(width/2, height-height*fromEdge, control1.position.x, control1.position.y, control2.position.x, control2.position.y, width/2, endPoint.position.y);
+    curve2 = new Bezier(width/2, height-height*fromEdge, width-control1.position.x, control1.position.y, width-control2.position.x, control2.position.y, width/2, endPoint.position.y)
+    table1 = curve1.getLUT();
+    table2 = curve2.getLUT();
+    veins = new Veins();
+    app.stage.removeChildren()
+    app.stage.addChild(leaf);
+    app.stage.addChild(bezierLines);
+    app.stage.addChild(control1);
+    app.stage.addChild(control2);
+    app.stage.addChild(endPoint);
 }
