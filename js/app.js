@@ -30,7 +30,7 @@ let tree;
 
 let mousePosition;
 let normalizedOrientation = new THREE.Vector3();
-let cameraAmpl = {x: 10, y: 10};
+let cameraAmpl = {x: 15, y: 15};
 let cameraVelocity = 0.1;
 
 let scrolling;
@@ -53,7 +53,7 @@ function init() {
 
   // create a Scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color( "black" );
+  scene.background = new THREE.Color( 0xAAEFDF );
   // scene.fog = new THREE.Fog(0x000000, 20, 100);
 
   //makeText();
@@ -90,7 +90,7 @@ function init() {
   //tree.showLeaves();
 
   const sphereGeom = new THREE.SphereBufferGeometry(0.5, 12, 12);
-  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color:"lightgreen"})
+  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color: "tomato"})
   sphere = new THREE.Mesh( sphereGeom, sphereMat );
   sphere.position.y = 20;
   sphereParams = {y: 20, a: 0.1};
@@ -184,7 +184,7 @@ function createCamera(){
 }
 
 function createGround(){
-  const geometry = new THREE.PlaneGeometry( 20, 20, 70, 70);
+  const geometry = new THREE.PlaneGeometry( 10, 10, 70, 70);
   geometry.rotateX(-PI/2);
 
   // let min = Infinity;
@@ -202,7 +202,7 @@ function createGround(){
     vertex.y = Math.random();
   }
 
-  const material = new THREE.MeshBasicMaterial( { color: "green", wireframe: true } );
+  const material = new THREE.MeshBasicMaterial( { color: 0x0cb300, wireframe: true } );
 
   const mesh = new THREE.Mesh( geometry, material );
   mesh.position.y -= 0.3;
@@ -274,7 +274,7 @@ function createTree() {
   varying vec3 vUv;
 
   void main() {
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0-step(delta, vUv.y));
+    gl_FragColor = vec4(48./255., 50./255., 61./255., 1.0-step(delta, vUv.y));
   }`
 
   const outlineFS = `
@@ -282,7 +282,7 @@ function createTree() {
   varying vec3 vUv;
 
   void main() {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0-step(delta, vUv.y));
+    gl_FragColor = vec4(223./255., 253./255., 255./255., 1.0-step(delta, vUv.y));
   }`
 
   /////////////////////////////////////////////////////////////

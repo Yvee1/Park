@@ -20,9 +20,9 @@ class Node {
             this.graphics.clear();
 
             if (this.width > 0){
-                this.graphics.lineStyle(this.width, 0x00ff00, 1);
+                this.graphics.lineStyle(this.width, 0x00ff00, 0.9);
             } else{
-                this.graphics.lineStyle(2, 0x00ff00, 1);
+                this.graphics.lineStyle(2, 0x00ff00, 0.9);
             }
             this.graphics.moveTo(this.parent.position.x, this.parent.position.y);
             this.graphics.lineTo(this.position.x, this.position.y);
