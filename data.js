@@ -1,6 +1,6 @@
 module.exports = {
-    pytree: {
-        title: "Pythagoras tree",
+    venation: {
+        title: "Leaf venation",
         color: "black"
     },
 
@@ -9,8 +9,9 @@ module.exports = {
         color: "white"
     },
 
-    venation: {
-        title: "Leaf venation",
+    pytree: {
+        title: "Pythagoras tree",
         color: "black"
-    }
+    },
+    
 }

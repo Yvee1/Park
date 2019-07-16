@@ -11,10 +11,10 @@
 }
 
 body {
-  background-color: black;
+  background-color: #AAEFDF;
   margin: 0;
   overflow-x: hidden;
-  color: black;
+  color: #263238;
   overflow-y: scroll;
 
   font-family: 'Roboto Mono', monospace;
