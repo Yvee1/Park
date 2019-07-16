@@ -370,7 +370,7 @@ function loadParrot() {
 
   const loader = new THREE.GLTFLoader();
 
-  const url = '/models/Parrot.glb';
+  const url = 'models/Parrot.glb';
 
   // Here, 'gltf' is the object that the loader returns to us
   const onLoad = ( gltf ) => {
