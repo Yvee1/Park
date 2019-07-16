@@ -170,7 +170,7 @@ class Tree {
             width = mapRange(i, 0, 80, 0.8, 0.25);
           }
           else{
-            width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.01;
+            width = mapRange(i, 0, this.branches.length, 0.5, 0)**2+0.02;
           }
           
 

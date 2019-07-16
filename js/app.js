@@ -90,7 +90,7 @@ function init() {
   //tree.showLeaves();
 
   const sphereGeom = new THREE.SphereBufferGeometry(0.5, 12, 12);
-  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color: "tomato"})
+  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color: 0x30323d})
   sphere = new THREE.Mesh( sphereGeom, sphereMat );
   sphere.position.y = 20;
   sphereParams = {y: 20, a: 0.1};
@@ -136,7 +136,7 @@ function update() {
         scene.remove(sphere)
         treeMesh.material.uniforms.delta.value = delta;
         treeOutlineMesh.material.uniforms.delta.value = delta;
-        delta += 0.08;
+        delta += 1;
     }
   }
 
@@ -274,15 +274,20 @@ function createTree() {
   varying vec3 vUv;
 
   void main() {
-    gl_FragColor = vec4(48./255., 50./255., 61./255., 1.0-step(delta, vUv.y));
+    gl_FragColor = vec4(48./255., 50./255., 61./255., 1.0-step(delta, vUv.y*vUv.y+5.*vUv.x*vUv.x+5.*vUv.z*vUv.z));
   }`
+  // 255,99,71 tomato
+  // 189, 74, 53 dark tomato
+  // 48, 50,61 blackish
+  // 56, 58, 71
+  // 66, 69, 84 lighter
 
   const outlineFS = `
   uniform float delta;
   varying vec3 vUv;
 
   void main() {
-    gl_FragColor = vec4(223./255., 253./255., 255./255., 1.0-step(delta, vUv.y));
+    gl_FragColor = vec4(223./255., 253./255., 255./255., 1.0-step(delta, vUv.y*vUv.y+5.*vUv.x*vUv.x+5.*vUv.z*vUv.z));
   }`
 
   /////////////////////////////////////////////////////////////
@@ -307,7 +312,7 @@ function createTree() {
   });
 
   treeMesh = new THREE.Mesh(tree.geom, tMat);
-  //treeMesh = new THREE.Mesh(tree.geom, new THREE.MeshStandardMaterial({color: "saddlebrown"}));
+  //treeMesh = new THREE.Mesh(tree.geom, new THREE.MeshStandardMaterial({color: "maroon", wireframe:true}));
   treeOutlineMesh = new THREE.Mesh(tree.outline_geom, outlineMat);
   scene.add(treeMesh);
   scene.add(treeOutlineMesh);
