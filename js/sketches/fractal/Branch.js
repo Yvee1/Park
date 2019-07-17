@@ -5,7 +5,7 @@ class Branch{
         this.width = width;
         this.graphics = new PIXI.Graphics();
         this.grown = false;
-        app.stage.addChild(this.graphics);
+        viewport.addChild(this.graphics);
     }
 
     grow(angle){
