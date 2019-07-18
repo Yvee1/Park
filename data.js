@@ -1,6 +1,6 @@
 module.exports = {
     lindenmayer: {
-        title: "L-systems",
+        title: "L-system",
         color: "black"
     },
     

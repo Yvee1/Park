@@ -35,6 +35,9 @@ why not plant them ALL?
 ### Space colonization
 ![3D model of tree with polygon grass](imgs/teaser.png)
 
+### L-system
+![A plant like structure made out of black lines on a white background](imgs/lindenmayer.png)
+
 ### Phyllotaxis
 ![A spiral pattern of coloured dots on a green background](imgs/phyllotaxis.png)
 
