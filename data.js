@@ -1,4 +1,9 @@
 module.exports = {
+    phyllotaxis: {
+        title: "Phyllotaxis",
+        color: "lightgreen"
+    },
+
     venation: {
         title: "Leaf venation",
         color: "black"
