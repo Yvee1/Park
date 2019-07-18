@@ -1,4 +1,9 @@
 module.exports = {
+    lindenmayer: {
+        title: "L-systems",
+        color: "black"
+    },
+    
     phyllotaxis: {
         title: "Phyllotaxis",
         color: "lightgreen"
