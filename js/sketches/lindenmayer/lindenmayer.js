@@ -29,19 +29,19 @@ function setup() {
   angleMode(DEGREES);
 
   L = new Lindenmayer(200, 22.5, "F", rules);
-  let gui = new dat.GUI();
+  const gui = new dat.GUI();
   //gui.remember(L);
 
   gui.add(L, 'angle', 0, 360);
   gui.add(L, 'originalLen', 1, 1000).name("Length").onChange(value => L.reset());
 
-  let modding = gui.add(L, 'currentSentence').listen().name("Current sentence");
+  const modding = gui.add(L, 'currentSentence').listen().name("Current sentence");
   modding.onChange(value => L.draw()); 
 
   gui.add(L, 'iterate');
   gui.add(L, 'reset');
 
-  let ruleset = gui.addFolder('Ruleset');
+  const ruleset = gui.addFolder('Ruleset');
   ruleset.add(L.ruleset, 'F');
   ruleset.add(L.ruleset, 'X');
 }
