@@ -104,8 +104,12 @@ function bomb(){
 }
 
 let t = 0;
-let delta = 0;
+let clipping = 0;
+
 function update() {
+  // Timestep
+  const delta = clock.getDelta();
+
   // Calculate the branches
   tree.grow();
 
@@ -114,25 +118,26 @@ function update() {
   if(tree.finished){
     //for (let i = 0; i < 5; i++){tree.nextMerge()}
 
-    if (!tree.complete && planted){
+    if (!tree.complete && planted && tree.calculated){
       tree.merge();
       createTree();
+    } else if(!tree.complete && !tree.calculated) {
+      for (let i = 0; i< 40; i++){
+        tree.nextGeoms();
+      }
     }
     
     // Grow animation
     if(tree.complete){
         scene.remove(sphere)
-        treeMesh.material.uniforms.delta.value = delta;
-        treeOutlineMesh.material.uniforms.delta.value = delta;
-        delta += 1;
+        treeMesh.material.uniforms.delta.value = clipping;
+        treeOutlineMesh.material.uniforms.delta.value = clipping;
+        clipping += 1;
     }
   }
 
   if (mixer){
-    const flying = clock.getDelta();
-    mixer.update( flying );
-  
-  
+    mixer.update( delta );
 
     // Parrot rotation in circle
     if (parrot){
@@ -154,7 +159,7 @@ function update() {
   camera.lookAt(0, (7+2*currentCameraY)/3, 0);
 
   //camera.lookAt(0, currentCameraY, 0);
-  t += 0.017;
+  t += delta;
 }
 
 function render() {

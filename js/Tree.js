@@ -49,6 +49,10 @@ class Tree {
     // stuff for frame by frame drawing
     this.drawn = false;
     this.last_drawn = -1;
+
+
+
+    this.i = 0;
   }
 
   // Add all leaves and branches to the scene
@@ -196,41 +200,58 @@ class Tree {
     }
   }
 
-  merge(){
-    let t1 = performance.now();
-    let geoms = []
-    let outline_geoms = []
+  prepareMerge(){
+    // let t1 = performance.now();
+    this.geoms = []
+    this.outline_geoms = []
 
-    let maxHeight = 0;
+    this.maxHeight = 0;
     for (let b of this.branches){
-      if (b.height > maxHeight){
-        maxHeight = b.height;
+      if (b.height > this.maxHeight){
+        this.maxHeight = b.height;
       }
     }
+  }
 
-    for (let i = 0; i < this.branches.length; i++){
-      let b = this.branches[i];
+  merge(){
+    let t1 = performance.now();
+    console.log("merge");
+    this.geom = THREE.BufferGeometryUtils.mergeBufferGeometries(this.geoms, false);
+    
+    console.log(performance.now()-t1)
+    this.outline_geom = THREE.BufferGeometryUtils.mergeBufferGeometries(this.outline_geoms, false);
+    this.complete = true;
+  }
+
+  nextGeoms(){
+    if (this.i % 1000 == 0){
+      console.log(this.i/this.branches.length)
+    }
+    if (this.i == 0){
+      this.prepareMerge();
+    }
+
+    if (this.i >=this.branches.length){
+      this.calculated = true;
+    } else{
+      let b = this.branches[this.i];
       let width;
 
-      width = mapRange(b.height, 0, maxHeight, 0.8, 0)**2.5 + 0.03
+      width = mapRange(b.height, 0, this.maxHeight, 0.8, 0)**2.5 + 0.03
 
       let geometries = b.show(width)
 
       if (geometries){
         for (let geom of geometries[0]){
-          geoms.push(geom);
+          this.geoms.push(geom);
         }
         for (let outline_geom of geometries[1]){
-          outline_geoms.push(outline_geom);
+          this.outline_geoms.push(outline_geom);
         }
-      }
-    }
+      } 
 
-    
-    this.geom = THREE.BufferGeometryUtils.mergeBufferGeometries(geoms, false);
-    
-    this.outline_geom = THREE.BufferGeometryUtils.mergeBufferGeometries(outline_geoms, false);
-    console.log(performance.now()-t1)
-    this.complete = true;
+      this.i = this.i + 1;
+    }
   }
+
 }
