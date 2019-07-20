@@ -60,6 +60,11 @@ const presets = {
   },
 }
 
+const ruleset = {
+  F: "",
+  X: ""
+};
+
 let sentence;
 let nextSentence;
 let L;
@@ -95,9 +100,10 @@ function setup() {
 
   system.add(L, 'angle', 0, 360).listen();
   system.add(L, 'axiom').listen();
-  const ruleset = system.addFolder('Ruleset');
-  ruleset.add(L.ruleset, 'F').listen();
-  ruleset.add(L.ruleset, 'X').listen();
+  const rulesetFolder = system.addFolder('Ruleset');
+  
+  rulesetFolder.add(ruleset, 'F').listen().onChange(rule => L.ruleset.F = rule);
+  rulesetFolder.add(ruleset, 'X').listen().onChange(rule => L.ruleset.X = rule);
 }
 
 class Lindenmayer {
@@ -109,6 +115,11 @@ class Lindenmayer {
 
     this.currentSentence = this.axiom;
     this.draw();
+
+
+    this.layer = 1;
+    this.recordLayer = 1;
+    this.stack = [];
   }
 
   iterate(){
@@ -134,30 +145,45 @@ class Lindenmayer {
 
   draw(){
     background(255);
-    stroke(0);
     resetMatrix();
     translate(width/2, height);
     for (const char of this.currentSentence){
       if (char == "F"){
+        stroke(50, (this.layer/this.recordLayer)*150, 0, 150)
         line(0, 0, 0, -this.len);
         translate(0, -this.len);
       } else if (char == "+") {
         rotate(-this.angle);
+        this.layer++;
+        if(this.layer > this.recordLayer){
+          this.recordLayer = this.layer;
+        }
       } else if (char == "-") {
         rotate(this.angle)
+        this.layer++;
+        if(this.layer > this.recordLayer){
+          this.recordLayer = this.layer;
+        }
       } else if (char == "[") {
         push();
+        this.stack.push(this.layer);
       } else if (char == "]") {
         pop();
+        this.layer = this.stack.pop();
       }
     }
 
   }
 
   reset(){
+    this.layer = 1;
+    this.recordLayer = 1;
+    this.stack = [];
+
     this.currentSentence = this.axiom;
     this.len = this.originalLen;
     this.draw();
+
   }
 
   setPreset(preset){
@@ -165,5 +191,9 @@ class Lindenmayer {
       this[property] = preset[property];
     }
     this.reset();
+
+    for (let letter in preset.ruleset){
+      ruleset[letter] = preset.ruleset[letter];
+    }
   }
 }
