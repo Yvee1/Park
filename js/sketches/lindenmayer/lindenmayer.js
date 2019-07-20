@@ -4,22 +4,64 @@ function windowResized() {
   resizeCanvas(window.innerWidth, window.innerHeight);
 }
 
-let sentence;
-let nextSentence;
-// const rules = {
-//   F: "F[+F]F[-F]F"
-// }
+const presets = {
+  plant1: {
+    angle: 25.7, 
+    axiom: "F", 
+    ruleset: {
+      F: "F[+F]F[-F]F",
+      X: "X"
+    }
+  },
 
-// const rules = {
-//   X: "F[+X][-X]FX",
-//   F: "FF"
-// }
+  plant2: {
+    angle: 20, 
+    axiom: "F", 
+    ruleset: {
+      F: "F[+F]F[-F][F]",
+      X: "X"
+    }
+  },
 
-const rules = {
-  F: "FF-[-F+F+F]+[+F-F-F]",
-  X: "X"
+  plant3: {
+    angle: 22.5, 
+    axiom: "F", 
+    ruleset: {
+      F: "FF-[-F+F+F]+[+F-F-F]",
+      X: "X"
+    }
+  },
+
+  plant4: {
+    angle: 20, 
+    axiom: "X", 
+    ruleset: {
+      F: "FF",
+      X: "F[+X]F[-X]+X"
+    }
+  },
+
+  plant5: {
+    angle: 25.7, 
+    axiom: "X", 
+    ruleset: {
+      F: "FF",
+      X: "F[+X][-X]FX"
+    }
+  },
+
+  plant6: {
+    angle: 22.5, 
+    axiom: "X", 
+    ruleset: {
+      F: "FF",
+      X: "F-[[X]+X]+F[+FX]-X"
+    }
+  },
 }
 
+let sentence;
+let nextSentence;
 let L;
 
 function setup() {
@@ -28,11 +70,10 @@ function setup() {
 
   angleMode(DEGREES);
 
-  L = new Lindenmayer(200, 22.5, "F", rules);
+  L = new Lindenmayer(200, presets['plant1']);
+  //const gui = new dat.GUI({load: getPresetJSON(), preset: 'Preset1'});
   const gui = new dat.GUI();
   //gui.remember(L);
-
-  gui.add(L, 'angle', 0, 360);
   gui.add(L, 'originalLen', 1, 1000).name("Length").onChange(value => L.reset());
 
   const modding = gui.add(L, 'currentSentence').listen().name("Current sentence");
@@ -40,22 +81,33 @@ function setup() {
 
   gui.add(L, 'iterate');
   gui.add(L, 'reset');
+  const system = gui.addFolder('System');
 
-  const ruleset = gui.addFolder('Ruleset');
-  ruleset.add(L.ruleset, 'F');
-  ruleset.add(L.ruleset, 'X');
+  let names = [];
+  for (let preset in presets){
+    names.push(preset);
+  }
+
+  const choice = {
+    preset: "plant1"
+  }
+  system.add(choice, 'preset', names).onChange(name => L.setPreset(presets[name]));
+
+  system.add(L, 'angle', 0, 360).listen();
+  system.add(L, 'axiom').listen();
+  const ruleset = system.addFolder('Ruleset');
+  ruleset.add(L.ruleset, 'F').listen();
+  ruleset.add(L.ruleset, 'X').listen();
 }
 
 class Lindenmayer {
-  constructor(len, angle, axiom, ruleset){
-    this.angle = angle;
-    this.axiom = axiom;
-    this.ruleset = ruleset;
+  constructor(len, preset){
+    this.setPreset(preset);
 
     this.originalLen = len;
     this.len = len;
 
-    this.currentSentence = axiom;
+    this.currentSentence = this.axiom;
     this.draw();
   }
 
@@ -71,8 +123,8 @@ class Lindenmayer {
 
     let nextSentence = "";
     for (const char of this.currentSentence){
-      if(rules.hasOwnProperty(char)){
-        nextSentence += rules[char]
+      if(this.ruleset.hasOwnProperty(char)){
+        nextSentence += this.ruleset[char]
       } else{
         nextSentence += char;
       }
@@ -103,8 +155,15 @@ class Lindenmayer {
   }
 
   reset(){
-    this.currentSentence = "";
+    this.currentSentence = this.axiom;
     this.len = this.originalLen;
     this.draw();
+  }
+
+  setPreset(preset){
+    for (let property in preset){
+      this[property] = preset[property];
+    }
+    this.reset();
   }
 }
