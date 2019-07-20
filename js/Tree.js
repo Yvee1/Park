@@ -213,12 +213,15 @@ class Tree {
     }
   }
 
-  merge(){
-    let t1 = performance.now();
-    console.log("merge");
+  merge1(){
+    // let t1 = performance.now();
+    console.log("merge1");
     this.geom = THREE.BufferGeometryUtils.mergeBufferGeometries(this.geoms, false);
-    
-    console.log(performance.now()-t1)
+    this.partiallyComplete = true;
+  }
+
+  merge2(){
+    console.log("merge2")
     this.outline_geom = THREE.BufferGeometryUtils.mergeBufferGeometries(this.outline_geoms, false);
     this.complete = true;
   }

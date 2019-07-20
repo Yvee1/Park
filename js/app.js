@@ -117,10 +117,13 @@ function update() {
 
   if(tree.finished){
     //for (let i = 0; i < 5; i++){tree.nextMerge()}
-
-    if (!tree.complete && planted && tree.calculated){
-      tree.merge();
+    if (!tree.partiallyComplete && tree.calculated){
+      tree.merge1();
+    } else if (tree.partiallyComplete && !tree.complete && tree.calculated ){
+      tree.merge2();
+    } else if (tree.complete && planted && !tree.added){
       createTree();
+      console.log("!!!")
     } else if(!tree.complete && !tree.calculated) {
       for (let i = 0; i< 40; i++){
         tree.nextGeoms();
@@ -128,7 +131,7 @@ function update() {
     }
     
     // Grow animation
-    if(tree.complete){
+    if(tree.complete && tree.added){
         scene.remove(sphere)
         treeMesh.material.uniforms.delta.value = clipping;
         treeOutlineMesh.material.uniforms.delta.value = clipping;
@@ -319,6 +322,8 @@ function createTree() {
   treeOutlineMesh = new THREE.Mesh(tree.outline_geom, outlineMat);
   scene.add(treeMesh);
   scene.add(treeOutlineMesh);
+  
+  tree.added = true;
 }
 
 function updateCamera(event) {
@@ -408,7 +413,7 @@ function createSphere(){
   sphereParams = {y: 20, a: 0.1};
   sphereTarget = {y: 0, a: 0.01};
   scene.add(sphere);
-  const tweenPos = new TWEEN.Tween(sphereParams).to(sphereTarget, 5000)
+  const tweenPos = new TWEEN.Tween(sphereParams).to(sphereTarget, 5500)
                 .easing(TWEEN.Easing.Quadratic.Out)
                 .onUpdate(() => { 
                                   sphere.position.y = sphereParams.y;
