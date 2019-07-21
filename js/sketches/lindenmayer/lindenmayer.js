@@ -94,7 +94,7 @@ function setup() {
   }
 
   const choice = {
-    preset: "plant1"
+    preset: "plant6"
   }
   system.add(choice, 'preset', names).onChange(name => L.setPreset(presets[name]));
 
