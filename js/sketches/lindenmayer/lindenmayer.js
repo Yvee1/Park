@@ -2,6 +2,7 @@
 
 function windowResized() {
   resizeCanvas(window.innerWidth, window.innerHeight);
+  L.draw();
 }
 
 const presets = {
@@ -75,7 +76,7 @@ function setup() {
 
   angleMode(DEGREES);
 
-  L = new Lindenmayer(200, presets['plant1']);
+  L = new Lindenmayer(200, presets['plant6']);
   //const gui = new dat.GUI({load: getPresetJSON(), preset: 'Preset1'});
   const gui = new dat.GUI();
   //gui.remember(L);
@@ -183,7 +184,6 @@ class Lindenmayer {
     this.currentSentence = this.axiom;
     this.len = this.originalLen;
     this.draw();
-
   }
 
   setPreset(preset){
