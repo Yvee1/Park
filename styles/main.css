@@ -47,6 +47,45 @@ h1 {
   width: 100%;
   height: 100vh;
 }
+#text-grid{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+}
+
+.title-text {
+  position: relative;
+  display: block;
+  width: auto;
+  margin: 0;
+}
+
+#title {
+  font-family: 'Playfair Display', serif;
+  font-size: 60px;
+  /* background: #4dc4a8; */
+  color: black;
+
+  grid-column: 1 / 2;
+
+  margin-top: 10px;
+  letter-spacing: 3px;
+  writing-mode: vertical-lr;
+  /* text-align: center; */
+}
+
+#subtitle{
+  font-family: 'Playfair Display', serif;
+  font-size: 60px;
+  /* background: #4dc4a8; */
+  color: black;
+
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+  margin-top: 10px;
+  letter-spacing: 3px;
+  writing-mode: vertical-lr;
+}
 
 .card-container {
   max-width: 1366px;
