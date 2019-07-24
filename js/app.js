@@ -328,7 +328,7 @@ function createTree() {
 
 function updateCamera(event) {
   scrolling = true;
-  targetCameraY = 7 - window.scrollY / 20.0;
+  targetCameraY = 7 - window.scrollY / 40.0;
 
   clearTimeout(scrollDetector)
   scrollDetector = setTimeout(bomb, fuse)
