@@ -24,7 +24,7 @@
   <div id="scene-container">
     <canvas id="viewport"></canvas>
   </div>
-
+  <div class="splash-screen"></div>
   <div id="text-grid" class="splash-screen">
     <h1 class="title-text" id="title">Park</h1>
     <h2 class="title-text" id="subtitle1">nature'</h2>
@@ -33,10 +33,10 @@
     {# <h1 class="title-text">Algorithmic botany sketches</h1> #}
   </div>
 
-  <div class="card-container">
+  <ul class="card-container">
 
     {% for id, sketch in data %}
-    <div class="sketch">
+    <li class="sketch">
       <a href="{{ id }}.html">
         <div class="stretchy-wrapper">
           <div class="card" style="background-image: url(imgs/{{ id }}.png)">
@@ -45,12 +45,12 @@
             </div>
           </div>
         </div>
+        <span class="sketch-title">{{ sketch.title }}</span>
       </a>
-      <span class="sketch-title">{{ sketch.title }}</span>
-    </div>
+    </li>
     {% endfor %}
 
-  </div>
+  </ul>
 
   <script src="js/Leaf.js"></script>
   <script src="js/Branch.js"></script>
