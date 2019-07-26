@@ -3,12 +3,16 @@ class Walker {
         this.x = x;
         this.y = y;
         this.r = 5 + size/500;
-        this.finished = finished | false;
+        this.finished = finished;
+
+        // For quadtree
+        this.width = 2*this.r;
+        this.height = 2*this.r;
     }
 
     show(){
         if(this.finished){
-            fill(255, 0, 0);
+            fill(0, 0, 0);
         } else{
             fill(0, 255, 0);
         }
