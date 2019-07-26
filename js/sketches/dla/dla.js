@@ -25,13 +25,12 @@ function setup(){
 
     // stroke(255);
     noStroke();
-    
+
     for (let w of walkers){
         if (w.finished){
             qt.insert(w);
         }
     }
-    console.log(walkers)
 }
 
 function draw(){
@@ -49,13 +48,11 @@ function draw(){
     background(255);
     translate(width/2, height/2);
     for (let i = 0; i < 10; i++){
-        
-
         for (let w of walkers){
             if (!w.finished){
                 w.walk();
+                w.checkCollision(qt.retrieve(w));
             }
-            w.checkCollision(qt.retrieve(w));
         } 
     }
 
