@@ -1,4 +1,9 @@
 module.exports = {
+    dla: {
+        title: "Diffusion limited aggregation",
+        color: "black"
+    },
+
     lindenmayer: {
         title: "L-system",
         color: "black"

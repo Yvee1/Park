@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Park: Diffusion limited aggregation</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+  <script type="text/javascript" src="js/libs/dat.gui.min.js"></script>
+
+</head>
+
+<style>
+
+body {
+  background-color: white;
+  margin: 0;
+  overflow: hidden;
+}
+
+input {
+  display: block;
+  margin: auto;
+}
+
+
+#back {
+  position: absolute;
+  text-decoration: none;
+  color: black;
+  top: -0.1em;
+  left: 0.3em;
+  font-size: 5em;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+i {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 6px;
+}
+
+</style>
+
+<body>
+  <a id="back" href="/Park">⇭</a>
+  
+ <main>
+    <div class="sketch">
+      <div id="sketch-holder"></div>
+    </div>
+  <script type="text/javascript" src="js/sketches/dla/Walker.js"></script>
+  <script type="text/javascript" src="js/sketches/dla/dla.js"></script>
+  </main>
+
+</body>
+
+</html>
