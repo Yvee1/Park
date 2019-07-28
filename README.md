@@ -35,6 +35,12 @@ why not plant them ALL?
 ### Space colonization
 ![3D model of tree with polygon grass](imgs/teaser.png)
 
+### Abstract SVG rose
+![Alternating black and red blobs on top of each other forming an abstract image of a rose](imgs/rose.png)
+
+### Diffusion limited aggregation
+![A black circle with branches growing out from it](imgs/dla.png)
+
 ### L-system
 ![A plant like structure made out of black lines on a white background](imgs/lindenmayer.png)
 
@@ -50,5 +56,5 @@ why not plant them ALL?
 ### Pythagoras tree
 ![Abstract tree made out of squares](imgs/pytree.png)
 
-### Misc
+## Misc
 Inspired by the [collection of three.js sketches](https://github.com/ykob/sketch-threejs) by ykob, Daniel Shiffman's [algorithmic botany series](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6bxNsa_3SfCPyF9Md9XvXhR) and [the algorithmic botany website](http://algorithmicbotany.org/).
