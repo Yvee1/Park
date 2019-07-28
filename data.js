@@ -1,4 +1,9 @@
 module.exports = {
+    rose: {
+        title: "Abstract SVG rose",
+        color: "red"
+    },
+
     dla: {
         title: "Diffusion limited aggregation",
         color: "black"
