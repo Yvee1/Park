@@ -59,6 +59,16 @@ const presets = {
       X: "F-[[X]+X]+F[+FX]-X"
     }
   },
+
+  "H Tree": {
+    angle: 90,
+    axiom: "[F]--F",
+    ruleset: {
+      F: "|[+F][-F]",
+      X: "",
+      "|": "||"
+    }
+  }
 }
 
 const ruleset = {
@@ -152,6 +162,12 @@ class Lindenmayer {
       if (char == "F"){
         stroke(50, (this.layer/this.recordLayer)*150, 0, 150)
         line(0, 0, 0, -this.len);
+        translate(0, -this.len);
+      } else if (char == "|") {
+        stroke(50, (this.layer/this.recordLayer)*150, 0, 150)
+        line(0, 0, 0, -this.len);
+        translate(0, -this.len);
+      } else if (char == "G") {
         translate(0, -this.len);
       } else if (char == "+") {
         rotate(-this.angle);

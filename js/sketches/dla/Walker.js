@@ -1,9 +1,15 @@
 class Walker {
     constructor(x, y, finished){
-        this.x = x;
-        this.y = y;
+        if (arguments.length == 0){
+            this.x = random(-size/2, size/2);
+            this.y = random(-size/2, size/2);
+            this.finished = false;
+        } else{
+            this.x = x;
+            this.y = y;
+            this.finished = finished;
+        }
         this.r = 5 + size/500;
-        this.finished = finished;
 
         // For quadtree
         this.width = 2*this.r;
@@ -30,9 +36,21 @@ class Walker {
                 if (walker.finished){
                     if((walker.x - this.x)**2 + (walker.y - this.y)**2 <= this.r**2){
                         this.finished = true;
+                        if (random() < 0.4){
+                            walkers.push(new Walker());
+                        }
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    checkInsideCircle(r){
+        if (this.x**2 + this.y**2 < r**2){
+            this.finished = true;
+            if (random() < 0.4){
+                walkers.push(new Walker());
             }
         }
     }

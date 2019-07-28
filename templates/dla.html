@@ -2,6 +2,7 @@
 {% extends "sketch.njk" %}
 
 {% block libs %}
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
   <script type="text/javascript" src="js/libs/dat.gui.min.js"></script>
@@ -9,13 +10,14 @@
 {% endblock %}
 
 {% block sketch %}
- <main>
-    <div class="sketch">
-      <div id="sketch-holder"></div>
-    </div>
   <script type="text/javascript" src="js/sketches/dla/Walker.js"></script>
   <script type="text/javascript" src="js/sketches/dla/dla.js"></script>
-  </main>
+  
+  <ul id="variations">
+    <li><a class="active" href="dla.html">Basic</a></li>
+    <li><a href="dla2.html">Circle</a></li>
+  </ul>
+
 {% endblock %}
 
 {% block style %}
@@ -23,10 +25,43 @@ body {
   background-color: white;
   margin: 0;
   overflow: hidden;
+  font-family: 'Roboto Mono', monospace;
 }
 
 input {
   display: block;
   margin: auto;
+}
+
+#variations {
+  position: absolute;
+  bottom: 1rem;
+  z-index: 2;
+  right: 1rem;
+}
+
+li {
+  display: inline-block;
+}
+
+a {
+  text-decoration: none;
+  color: green;
+
+  font-size: 1.25em;
+}
+
+a:hover {
+  color: black;
+}
+
+.active {
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+li {
+  margin-left: 5px;
+  margin-right: 5px
 }
 {% endblock %}

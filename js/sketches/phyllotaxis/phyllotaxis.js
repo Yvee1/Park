@@ -9,6 +9,11 @@ class Leaf {
 
   draw(){
     this.graphics.beginFill(PIXI.utils.rgb2hex([this.x+this.y, 100, 0]), 1);
+    //console.log((((this.x-width/2)**2+(this.y-height/2)**2)/1000)/255);
+    //console.log(PIXI.utils.rgb2hex([((this.x-width/2)**2+(this.y-height/2)**2/1000)/255, 100, 0]));
+    //console.log(this.y-height/2);
+    //this.graphics.beginFill(PIXI.utils.rgb2hex([0.2+0.8*(((this.x-width/2)**2+(this.y-height/2)**2)/500)/255, 0.9-0.5*(((this.x-width/2)**2+(this.y-height/2)**2)/500)/255, 0]), 1);
+    this.graphics.beginFill(PIXI.utils.rgb2hex([0.4+0.8*(((this.x-width/2)**2+(this.y-height/2)**2)/500)/255, 0.8, 0]), 1);
     this.graphics.drawCircle(this.x, this.y, this.r);
     this.graphics.endFill();
   }
@@ -33,7 +38,7 @@ class Phyllotaxis {
     this.leaves = [];
     for (let i = 0; i < 1000 + width*2.5; i++){
       // let size = 8-n/1000;
-      let size = 4 + this.n / 2000;
+      let size = 2 + this.n / 2000 + width/800;
 
       if (size <= 0){
         break;
