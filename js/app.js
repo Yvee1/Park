@@ -58,7 +58,7 @@ function init() {
   // create a Scene
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xAAEFDF );
-  // scene.fog = new THREE.Fog(0x000000, 20, 100);
+  scene.fog = new THREE.Fog(0xAAEFDF, 20, 180);
 
   loadParrot();
   //makeText();
@@ -69,7 +69,7 @@ function init() {
   //createPlane();
 
   // Event listeners
-  window.addEventListener( 'resize', onWindowResize );
+  window.addEventListener('resize', onWindowResize );
   window.addEventListener('scroll', updateCamera);
   if (window.mobileAndTabletcheck()) {
     window.addEventListener('deviceorientation', handleOrientationMove);
@@ -133,9 +133,9 @@ function update() {
     // Grow animation
     if(tree.complete && tree.added){
         scene.remove(sphere)
-        treeMesh.material.uniforms.delta.value = clipping;
-        treeOutlineMesh.material.uniforms.delta.value = clipping;
-        clipping += 1;
+        treeMesh.material.uniforms.delta.value = clipping**1.6;
+        treeOutlineMesh.material.uniforms.delta.value = clipping**1.6;
+        clipping += 0.15;
     }
   }
 
@@ -183,7 +183,7 @@ function createCamera(){
   const aspect = container.clientWidth / window.innerHeight;
 
   const near = 0.1;
-  const far = 70;
+  const far = 200;
 
   camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
   camera.position.set( 0, 7, 30 );
@@ -398,6 +398,7 @@ function loadParrot() {
 
     createGround();
     createSphere();
+    cameraZoom();
 
   };
 
@@ -407,18 +408,30 @@ function loadParrot() {
 
 function createSphere(){
   const sphereGeom = new THREE.SphereBufferGeometry(0.5, 12, 12);
-  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color: 0x30323d});
+  // const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color: 0x30323d});
+  const sphereMat = new THREE.MeshBasicMaterial({wireframe: true, color: "goldenrod"});
   sphere = new THREE.Mesh( sphereGeom, sphereMat );
   sphere.position.y = 20;
-  sphereParams = {y: 20, a: 0.1};
-  sphereTarget = {y: 0, a: 0.01};
+  sphereParams = {y: 38, a: 0.1, r: 1};
+  sphereTarget = {y: 0, a: 0.01, r: 1};
   scene.add(sphere);
-  const tweenPos = new TWEEN.Tween(sphereParams).to(sphereTarget, 5500)
-                .easing(TWEEN.Easing.Quadratic.Out)
+  const tweenPos = new TWEEN.Tween(sphereParams).to(sphereTarget, 6000)
+                .easing(TWEEN.Easing.Cubic.Out)
                 .onUpdate(() => { 
                                   sphere.position.y = sphereParams.y;
                                   sphere.rotateY(sphereParams.a);
+                                  sphere.scale.set(sphereParams.r, sphereParams.r, sphereParams.r);
                                 })
                 .onComplete(() => planted = true)
                 .start();
+}
+
+function cameraZoom(){
+  let cameraParams = {z: 200}
+  let end = {z: 30}
+  const a = new TWEEN.Tween(cameraParams).to(end, 5500)
+            .easing(TWEEN.Easing.Quartic.Out)
+            .onUpdate(() => {
+              camera.position.z = cameraParams.z;
+            }).start();
 }
