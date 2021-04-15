@@ -204,9 +204,13 @@ function createGround(){
   //     geometry.vertices[i].y = Math.random();
   //   }
   // }
-  for (let vertex of geometry.vertices){
-    vertex.y = Math.random();
+  const positions = geometry.attributes.position.array;
+  for (let i = 1; i < positions.length; i += 3){
+    positions[i] = Math.random();
   }
+  // for (let vertex of geometry.getAttribute('vertices')){
+  //   vertex.y = Math.random();
+  // }
 
   const material = new THREE.MeshBasicMaterial( { color: 0x0cb300, wireframe: true } );
 

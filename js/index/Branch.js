@@ -54,11 +54,11 @@ class Branch {
                 let outlineGeoms = [];
 
                 outlineMesh1.updateMatrix();
-                outlineMesh1.geometry.applyMatrix(outlineMesh1.matrix);
+                outlineMesh1.geometry.applyMatrix4(outlineMesh1.matrix);
                 outlineGeoms.push(outlineMesh1.geometry);
 
                 cylinder.updateMatrix();
-                cylinder.geometry.applyMatrix(cylinder.matrix);
+                cylinder.geometry.applyMatrix4(cylinder.matrix);
                 geoms.push(cylinder.geometry);
                 
                 // Add circle to the end of branches so you can't see into the tree
@@ -78,10 +78,10 @@ class Branch {
                     outlineMesh2.scale.multiplyScalar(1.1);
 
                     circle.updateMatrix();
-                    circle.geometry.applyMatrix(circle.matrix);
+                    circle.geometry.applyMatrix4(circle.matrix);
                     geoms.push(circle.geometry);
                     outlineMesh2.updateMatrix();
-                    outlineMesh2.geometry.applyMatrix(outlineMesh2.matrix)
+                    outlineMesh2.geometry.applyMatrix4(outlineMesh2.matrix)
                     outlineGeoms.push(outlineMesh2.geometry);
                 }
 
